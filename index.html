@@ -1,25 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wardom</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wardom</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#0a0c12;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+}
+
+button{
+    width:220px;
+    height:80px;
+    border:none;
+    border-radius:18px;
+    background:#db2525;
+    color:white;
+    font-size:28px;
+    font-weight:bold;
+    cursor:pointer;
+
+    box-shadow:
+        0 12px 0 #8b1414,
+        0 20px 40px rgba(0,0,0,.45);
+
+    transition:.08s;
+}
+
+button:hover{
+    filter:brightness(1.1);
+}
+
+button:active{
+    transform:translateY(12px);
+    box-shadow:
+        0 0 0 #8b1414,
+        0 8px 20px rgba(0,0,0,.4);
+}
+
+iframe{
+    display:none;
+}
+</style>
 </head>
 <body>
 
-<div class="container">
-    <h1>WARDOM</h1>
-    <p>Building digital experiences.</p>
+<button onclick="rickroll()">
+DON'T CLICK
+</button>
 
-    <div class="badge">
-        🚀 Website Launching Soon
-    </div>
+<iframe
+id="rick"
+width="0"
+height="0"
+allow="autoplay"
+src="">
+</iframe>
 
-    <p class="email">
-        codecanvus@wardom.store
-    </p>
-</div>
+<script>
+function rickroll(){
+
+document.querySelector("button").innerText="😂 TOO LATE";
+
+document.getElementById("rick").src=
+"https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1";
+
+}
+</script>
 
 </body>
 </html>
