@@ -81,21 +81,21 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right Phone + Dark Mode Toggle + Start project CTA */}
+        {/* Right Phone + Larger Theme Toggle + Start project CTA */}
         <div className="hidden items-center gap-4 md:flex">
           <a href="tel:+917262950982" className="flex items-center gap-1.5 text-xs font-bold text-[#0F0F0F] dark:text-white hover:text-[#5F8D3B]">
             <Phone className="h-3.5 w-3.5 text-[#5F8D3B]" />
             +91 72629 50982
           </a>
 
-          {/* Theme Toggle Button */}
+          {/* Slightly Larger Theme Toggle Button (h-10 w-10) */}
           <button
             onClick={toggleTheme}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] text-[#0F0F0F] dark:text-white hover:border-[#5F8D3B] transition-colors"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] text-[#0F0F0F] dark:text-white hover:border-[#5F8D3B] transition-all hover:scale-105 active:scale-95 shadow-sm"
             title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             aria-label="Toggle Dark Mode"
           >
-            {isDark ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} className="text-[#555555]" />}
+            {isDark ? <Sun size={19} className="text-amber-400" /> : <Moon size={19} className="text-[#555555]" />}
           </button>
 
           <Button href="/#contact" variant="primary" className="!text-xs !px-5 !py-2.5 font-bold">
@@ -107,18 +107,18 @@ export default function Navbar() {
         <div className="flex items-center gap-2 md:hidden">
           <button
             onClick={toggleTheme}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] text-[#0F0F0F] dark:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] text-[#0F0F0F] dark:text-white"
             aria-label="Toggle Dark Mode"
           >
-            {isDark ? <Sun size={16} className="text-amber-400" /> : <Moon size={16} />}
+            {isDark ? <Sun size={19} className="text-amber-400" /> : <Moon size={19} />}
           </button>
 
           <button
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] text-[#0F0F0F] dark:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] text-[#0F0F0F] dark:text-white"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
           >
-            {open ? <X size={18} /> : <Menu size={18} />}
+            {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </motion.div>

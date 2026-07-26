@@ -19,6 +19,16 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+body.dark-mode {
+  --dark: #FFFFFF;
+  --muted: #A1A1AA;
+  --light-muted: #71717A;
+  --border: #27272A;
+  --bg-white: #090A0F;
+  --bg-light: #12131A;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -39,6 +49,7 @@ body {
   color: var(--dark);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 a {
@@ -80,7 +91,7 @@ button, input, textarea, select {
 
 .btn-primary {
   background-color: var(--primary);
-  color: var(--bg-white);
+  color: #FFFFFF;
   border-color: var(--primary);
 }
 
@@ -101,6 +112,27 @@ button, input, textarea, select {
   border-color: var(--dark);
   background-color: var(--bg-light);
   transform: translateY(-1px);
+}
+
+/* Theme Toggle Button (h-10 w-10) */
+.theme-toggle-btn {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background-color: var(--bg-light);
+  color: var(--dark);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--primary);
+  transform: scale(1.05);
 }
 
 /* Badges */
@@ -153,7 +185,8 @@ button, input, textarea, select {
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bg-white);
+  opacity: 0.95;
   backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: 9999px;
@@ -556,7 +589,7 @@ button, input, textarea, select {
 }
 
 .banner-card {
-  background: linear-gradient(135deg, #FFFFFF, #FAFAFA);
+  background: var(--bg-white);
   border: 1px solid var(--border);
   border-radius: 1.75rem;
   padding: 3.5rem;
@@ -664,7 +697,7 @@ button, input, textarea, select {
 
 .pill-btn.active, .pill-btn:hover {
   background-color: var(--primary);
-  color: var(--bg-white);
+  color: #FFFFFF;
   border-color: var(--primary);
 }
 
