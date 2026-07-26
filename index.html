@@ -1,11 +1,431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=/client/">
-<title>WARDOM Studio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WARDOM Studio — Digital Products that Scale</title>
+  <meta name="description" content="WARDOM Studio designs & engineers high-converting websites, web applications, mobile apps, and AI automations." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Playfair+Display:ital,wght@1,400;1,600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Core Styling -->
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-<p>Redirecting to <a href="/client/">WARDOM Studio</a>...</p>
+
+  <!-- 1. Minimal Header / Navbar -->
+  <header class="header">
+    <nav class="navbar">
+      <a href="#top" class="brand">
+        <div class="brand-icon">W</div>
+        <div class="brand-text">
+          <span class="brand-name">WARDOM<span style="color: var(--primary);">.</span></span>
+          <span class="brand-tag">ONLINE STUDIO</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#work" class="nav-link">Work</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#about" class="nav-link">About Us</a></li>
+        <li><a href="#reviews" class="nav-link">Reviews</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="#contact" class="nav-link">Get in touch</a>
+        <a href="#contact" class="btn btn-primary">Let's Talk Project &rarr;</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 2. Hero Section -->
+  <section id="top" class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="badge">WEB DESIGN</div>
+        <h1 class="hero-title">
+          Digital Products <span class="hero-title-italic">that Scale.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Transforming ambitious ideas into high-converting websites and scalable digital experiences.
+        </p>
+      </div>
+
+      <!-- 4 Showcase Cards Gallery Row -->
+      <div class="hero-showcase">
+        <div class="card showcase-card">
+          <div>
+            <div class="showcase-header">
+              <span class="showcase-tag">SHOWCASE</span>
+              <span style="color: var(--light-muted);">✦</span>
+            </div>
+            <h3 class="showcase-title">Velvet Beauty & Nails</h3>
+            <p class="showcase-sub">Nail Art & Salon Web App</p>
+          </div>
+          <div class="showcase-frame">
+            <span class="showcase-frame-header">Stylist Portfolio & Booking</span>
+            <div class="showcase-frame-metric">
+              <span>4.9★ (320 Reviews)</span>
+              <span style="color: var(--primary);">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card showcase-card">
+          <div>
+            <div class="showcase-header">
+              <span class="showcase-tag">SHOWCASE</span>
+              <span style="color: var(--light-muted);">🏋</span>
+            </div>
+            <h3 class="showcase-title">Pulse Fitness & Gym</h3>
+            <p class="showcase-sub">Gym Member App & Portal</p>
+          </div>
+          <div class="showcase-frame">
+            <span class="showcase-frame-header">HIIT Class Pass System</span>
+            <div class="showcase-frame-metric">
+              <span>1,480 Active Members</span>
+              <span style="color: var(--primary);">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card showcase-card">
+          <div>
+            <div class="showcase-header">
+              <span class="showcase-tag">SHOWCASE</span>
+              <span style="color: var(--light-muted);">🍽</span>
+            </div>
+            <h3 class="showcase-title">Aura Bistro & Lounge</h3>
+            <p class="showcase-sub">Cafe & Restaurant App</p>
+          </div>
+          <div class="showcase-frame">
+            <span class="showcase-frame-header">Direct Table Reservations</span>
+            <div class="showcase-frame-metric">
+              <span>+310% Online Bookings</span>
+              <span style="color: var(--primary);">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card showcase-card">
+          <div>
+            <div class="showcase-header">
+              <span class="showcase-tag">SHOWCASE</span>
+              <span style="color: var(--light-muted);">🏥</span>
+            </div>
+            <h3 class="showcase-title">Luminary Medical Center</h3>
+            <p class="showcase-sub">Doctor & Clinic Portal</p>
+          </div>
+          <div class="showcase-frame">
+            <span class="showcase-frame-header">24/7 AI Triage Assistant</span>
+            <div class="showcase-frame-metric">
+              <span>HIPAA Compliant</span>
+              <span style="color: var(--primary);">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons Below Showcase -->
+      <div class="hero-actions">
+        <a href="#work" class="btn btn-secondary">VIEW WORK &rarr;</a>
+        <a href="#contact" class="btn btn-primary">BOOK A DISCOVERY CALL &rarr;</a>
+      </div>
+
+      <!-- Horizontal Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-val">7+</div>
+          <div class="stat-lbl">Projects Delivered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">100%</div>
+          <div class="stat-lbl">Client Satisfaction Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">2+</div>
+          <div class="stat-lbl">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">2</div>
+          <div class="stat-lbl">Active Engineers & Designers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Specialized Services Section -->
+  <section id="services" class="services-sec">
+    <div class="container">
+      <div class="services-header">
+        <div>
+          <span class="services-eyebrow">OUR SERVICES</span>
+          <h2 class="services-h2">Specialized services for digital growth.</h2>
+        </div>
+        <p class="services-desc">
+          We build modern digital products that turn visitors into customers... combining research, top-tier engineering, and human-centric design.
+        </p>
+      </div>
+
+      <div class="services-rows">
+        <!-- Row 01 -->
+        <div class="service-row">
+          <div>
+            <span class="service-num">01</span>
+            <h3 class="service-title">Landing Pages</h3>
+          </div>
+          <div class="service-grid">
+            <p class="service-summary">High-converting web design tailored for local businesses & startups.</p>
+            <div class="service-checkmarks">
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Rapid Turnaround</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> SEO Optimization</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Conversion Focus</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> A/B Testing</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 02 -->
+        <div class="service-row">
+          <div>
+            <span class="service-num">02</span>
+            <h3 class="service-title">Full-Stack Applications</h3>
+          </div>
+          <div class="service-grid">
+            <p class="service-summary">Custom web applications, booking portals, client dashboards, and custom CMS.</p>
+            <div class="service-checkmarks">
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Secure Auth & Payments</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Scalable Infrastructure</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Custom Admin Panel</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Real-Time Database</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 03 -->
+        <div class="service-row">
+          <div>
+            <span class="service-num">03</span>
+            <h3 class="service-title">Mobile Applications</h3>
+          </div>
+          <div class="service-grid">
+            <p class="service-summary">Cross-platform iOS & Android apps for appointment booking, customer loyalty, and pre-orders.</p>
+            <div class="service-checkmarks">
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Native Performance</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Push Notifications</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Intuitive Touch UX</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> App Store Release</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 04 -->
+        <div class="service-row">
+          <div>
+            <span class="service-num">04</span>
+            <h3 class="service-title">Portfolio & Business Websites</h3>
+          </div>
+          <div class="service-grid">
+            <p class="service-summary">High-craft websites for Cafes, Salons, Gyms, Clinics, Hotels, and Personal Brands.</p>
+            <div class="service-checkmarks">
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Bespoke Visual Identity</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Sub-Second Speed</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> Custom Motion</div>
+              <div class="checkmark-item"><span class="checkmark-icon">✓</span> 100% Code Ownership</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="services-bottom">
+        <a href="#work" style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase;">DISCOVER ALL SERVICES &rarr;</a>
+        <a href="#contact" class="btn btn-primary">GET A CUSTOM QUOTE &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Testimonials Section -->
+  <section id="reviews" class="testimonials-sec">
+    <div class="container">
+      <span class="services-eyebrow">REVIEWS · TESTIMONIALS</span>
+      <h2 class="services-h2" style="margin-bottom: 2rem;">What founders & business owners say.</h2>
+
+      <div class="testimonials-grid">
+        <div class="quote-card">
+          <p class="quote-text">"WARDOM transformed our clinic’s patient acquisition. The AI triage bot handles 70% of patient inquiries after hours, and online bookings grew +240% in 60 days."</p>
+          <div class="quote-author">
+            <div class="author-name">Dr. Sarah Vance, MD</div>
+            <div class="author-role">Medical Director, Luminary Health Center</div>
+          </div>
+        </div>
+
+        <div class="quote-card">
+          <p class="quote-text">"Working with WARDOM was the best investment we made for Aura Bistro. Our table reservation app and web experience feel like something designed in Cupertino."</p>
+          <div class="quote-author">
+            <div class="author-name">Vikram Malhotra</div>
+            <div class="author-role">Owner, Aura Bistro & Lounge</div>
+          </div>
+        </div>
+
+        <div class="quote-card">
+          <p class="quote-text">"They moved with discipline and taste. Advance deposits completely eliminated our nail salon no-shows! Our clients love the online portfolio and booking system."</p>
+          <div class="quote-author">
+            <div class="author-name">Ananya Sharma</div>
+            <div class="author-role">Founder, Velvet Nails & Beauty Studio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Team / About Banner Card -->
+  <section id="about" class="banner-sec">
+    <div class="container">
+      <div class="banner-card">
+        <div>
+          <span class="services-eyebrow">WHO WE ARE</span>
+          <h2 class="banner-h2">Designers, engineers, <span class="hero-title-italic">problem solvers.</span></h2>
+          <p class="banner-p">
+            We are a tight-knit digital studio that combines strategy, design, and full-stack software development to help ambitious businesses stand out and grow.
+          </p>
+          <div style="margin-top: 2rem;">
+            <a href="#contact" class="btn btn-primary">READ OUR STORY &rarr;</a>
+          </div>
+        </div>
+
+        <div class="banner-team-grid">
+          <div class="team-box">
+            <div style="color: var(--primary); font-size: 1.25rem;">👥</div>
+            <div class="team-box-title">Senior Designers</div>
+            <div class="team-box-desc">Bespoke UI, typography hierarchy, and conversion layout math.</div>
+          </div>
+          <div class="team-box">
+            <div style="color: var(--primary); font-size: 1.25rem;">💻</div>
+            <div class="team-box-title">Lead Engineers</div>
+            <div class="team-box-desc">Clean React, Next.js, and sub-second page performance.</div>
+          </div>
+          <div class="team-box" style="grid-column: span 2;">
+            <div style="color: var(--primary); font-size: 1.25rem;">✨</div>
+            <div class="team-box-title">AI & Automation Specialists</div>
+            <div class="team-box-desc">24/7 AI triage bots, WhatsApp reminders, and CRM sync.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Start A Project (Contact Form) -->
+  <section id="contact" class="contact-sec">
+    <div class="container">
+      <div class="contact-header">
+        <div>
+          <span class="services-eyebrow">START A PROJECT</span>
+          <h2 class="services-h2">Turn ideas into <span class="hero-title-italic">reality!</span></h2>
+          <p class="services-desc" style="margin-top: 0.5rem;">
+            Got an idea? Let's turn it into reality. Tell us about your project and we'll respond within 24 hours.
+          </p>
+        </div>
+      </div>
+
+      <div class="contact-layout">
+        <!-- Form Column -->
+        <div class="card">
+          <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you! Your message has been received.');">
+            <div class="form-group">
+              <label class="form-label">01 What's your name?</label>
+              <input type="text" class="form-input" placeholder="Type your full name..." required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">02 What's your email address?</label>
+              <input type="email" class="form-input" placeholder="name@company.com" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">03 What type of service do you need?</label>
+              <div class="pills-group">
+                <button type="button" class="pill-btn active">Landing Pages</button>
+                <button type="button" class="pill-btn">Full-Stack App</button>
+                <button type="button" class="pill-btn">Mobile App</button>
+                <button type="button" class="pill-btn">AI & Automations</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">04 What is your budget range?</label>
+              <div class="pills-group">
+                <button type="button" class="pill-btn">₹50k – ₹1.5L</button>
+                <button type="button" class="pill-btn active">₹1.5L – ₹3.5L</button>
+                <button type="button" class="pill-btn">₹3.5L – ₹8L</button>
+                <button type="button" class="pill-btn">₹8L+</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">05 Tell us more about your project</label>
+              <textarea class="form-textarea" rows="4" placeholder="Describe your project goals, key requirements, timeline..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1rem;">
+              SEND MESSAGE &rarr;
+            </button>
+          </form>
+        </div>
+
+        <!-- Sidebar Column -->
+        <div class="contact-sidebar">
+          <div class="sidebar-box">
+            <div class="sidebar-title">STUDIO CONTACT DETAILS</div>
+            <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.8rem;">
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--light-muted);">DIRECT EMAIL</span>
+                <a href="mailto:hello@wardom.studio" style="display: block; font-weight: 800; color: var(--primary); font-size: 0.9rem; margin-top: 0.2rem;">hello@wardom.studio</a>
+              </div>
+              <div>
+                <span style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--light-muted);">RESPONSE COMMITMENT</span>
+                <p style="font-weight: 600; color: var(--dark);">Under 24 hours guaranteed</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-box">
+            <div class="sidebar-title">CONNECT WITH US</div>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.8rem; font-weight: 600;">
+              <a href="https://twitter.com" target="_blank">Twitter / X &rarr;</a>
+              <a href="https://instagram.com" target="_blank">Instagram / Visuals &rarr;</a>
+              <a href="https://github.com" target="_blank">GitHub / Open Source &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. Massive Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-brand">
+        <h2 class="footer-logo">WARDOM<span class="footer-logo-dot">.</span></h2>
+        <p class="footer-sub">DIGITAL PRODUCTS · WEBSITES · FULL-STACK APPS · MOBILE APPS · AI AUTOMATIONS</p>
+      </div>
+
+      <div class="footer-bar">
+        <ul class="footer-links">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="./client/" style="color: var(--primary); font-weight: 800;">React App Portal</a></li>
+        </ul>
+        <p>© 2026 WARDOM Studio. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>
