@@ -50,9 +50,9 @@ export default function Contact() {
     }
 
     try {
-      // 1. Insert into Supabase Cloud Database (contact_submissions table)
+      // 1. Save directly into Supabase Cloud Database (contact_submissions table)
       try {
-        await supabase.from('contact_submissions').insert([
+        const { error: dbError } = await supabase.from('contact_submissions').insert([
           {
             name: form.name,
             email: form.email,
@@ -63,21 +63,24 @@ export default function Contact() {
             message: form.message,
           },
         ])
+        if (dbError) console.warn('Supabase DB notice:', dbError)
       } catch (sbErr) {
-        console.warn('Supabase DB insert warning:', sbErr)
+        console.warn('Supabase DB catch:', sbErr)
       }
 
-      // 2. Sync to Local Storage so Admin panel reads it immediately
+      // 2. Sync to Local Storage so Admin panel reads it immediately locally too
       const existingLocal = JSON.parse(localStorage.getItem('wardom_contact_submissions') || '[]')
       localStorage.setItem('wardom_contact_submissions', JSON.stringify([newSubmission, ...existingLocal]))
 
-      // 3. Web3Forms Live Email Dispatch to hello@wardom.store & irfanshaikh3262@gmail.com
+      // 3. Automatic Email Delivery to hello@wardom.store & irfanshaikh3262@gmail.com
       try {
         const web3FormsData = new FormData()
         web3FormsData.append('access_key', '8d14876b-9516-43e8-b76b-wardom')
-        web3FormsData.append('subject', `New WARDOM Project Inquiry: ${form.name} (${form.company || 'Client'})`)
-        web3FormsData.append('from_name', form.name)
+        web3FormsData.append('subject', `📬 New WARDOM Lead: ${form.name} (${form.company || 'Individual Client'})`)
+        web3FormsData.append('from_name', 'WARDOM Studio Inquiry')
+        web3FormsData.append('to_email', 'hello@wardom.store,irfanshaikh3262@gmail.com')
         web3FormsData.append('replyto', form.email)
+        web3FormsData.append('name', form.name)
         web3FormsData.append('email', form.email)
         web3FormsData.append('phone', form.phone)
         web3FormsData.append('company', form.company)
@@ -90,7 +93,7 @@ export default function Contact() {
           body: web3FormsData,
         })
       } catch (emailErr) {
-        console.warn('Live email dispatch catch:', emailErr)
+        console.warn('Email dispatch catch:', emailErr)
       }
 
       setStatus('success')
