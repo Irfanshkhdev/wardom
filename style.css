@@ -103,17 +103,6 @@ button, input, textarea, select {
   transform: translateY(-1px);
 }
 
-.btn-dark {
-  background-color: var(--dark);
-  color: var(--bg-white);
-  border-color: var(--dark);
-}
-
-.btn-dark:hover {
-  background-color: #222222;
-  transform: translateY(-1px);
-}
-
 /* Badges */
 .badge {
   display: inline-flex;
@@ -514,6 +503,7 @@ button, input, textarea, select {
 .testimonials-sec {
   padding: 5rem 0;
   background-color: var(--bg-white);
+  overflow: hidden;
 }
 
 .testimonials-grid {
@@ -571,9 +561,11 @@ button, input, textarea, select {
   border-radius: 1.75rem;
   padding: 3.5rem;
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr;
   align-items: center;
   gap: 2.5rem;
+  max-width: 950px;
+  margin: 0 auto;
 }
 
 .banner-h2 {
@@ -590,32 +582,6 @@ button, input, textarea, select {
   color: var(--muted);
   margin-top: 1.5rem;
   line-height: 1.6;
-}
-
-.banner-team-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.team-box {
-  background-color: var(--bg-white);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  padding: 1.25rem;
-}
-
-.team-box-title {
-  font-size: 0.875rem;
-  font-weight: 800;
-  color: var(--dark);
-  margin-top: 0.5rem;
-}
-
-.team-box-desc {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-top: 0.25rem;
 }
 
 /* Start A Project (Contact) */
@@ -787,7 +753,6 @@ button, input, textarea, select {
   .services-header, .contact-header { flex-direction: column; align-items: flex-start; }
   .service-row { grid-template-columns: 1fr; }
   .testimonials-grid { grid-template-columns: 1fr; }
-  .banner-card { grid-template-columns: 1fr; }
   .contact-layout { grid-template-columns: 1fr; }
   .footer-logo { font-size: 4.5rem; }
 }
