@@ -1,100 +1,104 @@
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Palette, Code2, Rocket, LineChart } from 'lucide-react'
+import { CheckCircle2, ArrowUpRight } from 'lucide-react'
 import Section from '../components/Section'
 import Container from '../components/Container'
+import Button from '../components/Button'
 
-const FALLBACK_SERVICES = [
+const SERVICES_ROWS = [
   {
-    icon: Palette,
-    title: 'Brand systems',
-    description: 'Editorial identity, interaction language, and interface systems designed to feel composed from the first impression onward.',
+    number: '01',
+    title: 'Landing Pages',
+    summary: 'High-converting web design tailored for local businesses & startups.',
+    features: ['Rapid 2-Week Turnaround', 'SEO & Speed Optimization', 'Conversion-Focused Funnel', 'A/B Testing Ready'],
   },
   {
-    icon: Code2,
-    title: 'Product engineering',
-    description: 'Responsive, accessible front ends and modern back ends built for performance, maintainability, and clear iteration.',
+    number: '02',
+    title: 'Full-Stack Applications',
+    summary: 'Custom web applications, booking portals, client dashboards, and custom CMS.',
+    features: ['Secure Auth & Payments', 'Scalable Cloud Infrastructure', 'Custom Executive Admin Panel', 'Real-Time Database'],
   },
   {
-    icon: Rocket,
-    title: 'Launch support',
-    description: 'From positioning to rollout, we help teams ship with calm confidence and a sharper narrative across every touchpoint.',
+    number: '03',
+    title: 'Mobile Applications',
+    summary: 'Cross-platform iOS & Android apps for appointment booking, customer loyalty, and pre-orders.',
+    features: ['Native Performance', 'Push Notifications', 'Intuitive Touch UX', 'App Store Release'],
   },
   {
-    icon: LineChart,
-    title: 'Growth design',
-    description: 'Conversion-aware pages, analytics hooks, and informed refinement loops that keep the experience improving after launch.',
+    number: '04',
+    title: 'Portfolio & Business Websites',
+    summary: 'High-craft websites for Cafes, Salons, Gyms, Clinics, Hotels, and Personal Brands.',
+    features: ['Bespoke Visual Identity', 'Sub-Second Page Speeds', 'Custom Micro-Animations', '100% Code Ownership'],
   },
 ]
 
-const ICONS = { palette: Palette, code2: Code2, rocket: Rocket, linechart: LineChart }
-
 export default function Services() {
-  const [services, setServices] = useState(FALLBACK_SERVICES)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const loadServices = async () => {
-      try {
-        const response = await fetch(`${(import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')}/api/services`)
-        if (!response.ok) throw new Error('Unable to load services')
-        const data = await response.json()
-        if (Array.isArray(data) && data.length) {
-          setServices(data.map((service) => ({ ...service, icon: ICONS[service.icon] || Palette })))
-        }
-      } catch {
-        setServices(FALLBACK_SERVICES)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadServices()
-  }, [])
-
   return (
-    <Section id="services" eyebrow="Services" className="bg-surface/40">
+    <Section id="services" className="bg-[#FAFAFA] border-y border-[#E5E7EB]">
       <Container>
-        <div className="mb-14 max-w-3xl">
-          <h2 className="font-heading text-4xl leading-tight text-primaryText md:text-6xl">
-            Strategy, design, and build <span className="italic text-accent">in one rhythm.</span>
-          </h2>
-          <p className="mt-4 text-base leading-7 text-secondaryText md:text-lg">
-            We work across the full product experience so your brand, website, and product feel cohesive rather than stitched together.
+        {/* Top Header Split (Helaph structure) */}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between border-b border-[#E5E7EB] pb-12">
+          <div className="max-w-xl">
+            <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#5F8D3B]">
+              OUR SERVICES
+            </span>
+            <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-4xl lg:text-5xl leading-[1.1]">
+              Specialized services for digital growth.
+            </h2>
+          </div>
+
+          <p className="max-w-md text-sm leading-relaxed text-[#555555]">
+            We build modern digital products that turn visitors into customers... combining research, top-tier engineering, and human-centric design.
           </p>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-2">
-          {loading ? (
-            <div className="rounded-[24px] border border-white/10 bg-white/[0.04] p-8 text-center text-sm text-secondaryText lg:col-span-2">
-              Loading services…
-            </div>
-          ) : null}
-          {services.map((service, i) => {
-            const Icon = service.icon || Palette
-            return (
-              <motion.div
-                key={service.title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.55, delay: i * 0.08 }}
-                whileHover={{ y: -4, scale: 1.01 }}
-                className="rounded-[28px] border border-white/10 bg-background/70 p-7 shadow-[0_16px_45px_rgba(0,0,0,0.2)]"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.05] text-accent">
-                    <Icon size={20} />
-                  </span>
-                  <span className="font-mono-num text-sm uppercase tracking-[0.3em] text-secondaryText">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+        {/* 4 Numbered Service Rows divided by hairline lines (Helaph structure) */}
+        <div className="mt-10 divide-y divide-[#E5E7EB]">
+          {SERVICES_ROWS.map((service, index) => (
+            <motion.div
+              key={service.number}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
+              className="py-10 first:pt-4 last:pb-4 grid gap-8 lg:grid-cols-[0.4fr_1.6fr] lg:items-center"
+            >
+              {/* Left Number & Title */}
+              <div>
+                <span className="font-mono text-sm font-bold text-[#5F8D3B] block">
+                  {service.number}
+                </span>
+                <h3 className="mt-2 text-2xl font-extrabold text-[#0F0F0F]">
+                  {service.title}
+                </h3>
+              </div>
+
+              {/* Right Summary & 2x2 Feature Checkmarks */}
+              <div className="grid gap-6 md:grid-cols-2 lg:items-center">
+                <p className="text-sm leading-relaxed text-[#555555]">
+                  {service.summary}
+                </p>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {service.features.map((feature) => (
+                    <div key={feature} className="flex items-center gap-2 text-xs font-semibold text-[#0F0F0F]">
+                      <CheckCircle2 className="h-4 w-4 text-[#5F8D3B] shrink-0" />
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
-                <h3 className="mt-6 font-heading text-2xl text-primaryText">{service.title}</h3>
-                <p className="mt-3 text-base leading-7 text-secondaryText">{service.description}</p>
-              </motion.div>
-            )
-          })}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom Action CTAs (Helaph structure: DISCOVER ALL SERVICES ↗ + GET A CUSTOM QUOTE ↗) */}
+        <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[#E5E7EB] pt-8">
+          <a href="#work" className="text-xs font-bold uppercase tracking-wider text-[#0F0F0F] hover:text-[#5F8D3B] flex items-center gap-1">
+            DISCOVER ALL SERVICES <ArrowUpRight className="h-4 w-4" />
+          </a>
+          <Button href="#contact" variant="primary" className="!text-xs !px-6 !py-3 font-bold uppercase tracking-wider">
+            GET A CUSTOM QUOTE <ArrowUpRight className="h-4 w-4" />
+          </Button>
         </div>
       </Container>
     </Section>

@@ -1,21 +1,33 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Check, Loader2 } from 'lucide-react'
+import { ArrowUpRight, Check, Loader2, Mail, MapPin, Send, Github, Instagram, Twitter, Compass } from 'lucide-react'
 import Section from '../components/Section'
 import Container from '../components/Container'
 import Button from '../components/Button'
-import { submitContactForm, submitNewsletterForm } from '../utils/api'
+import { submitContactForm } from '../utils/api'
 
-const initialForm = { name: '', email: '', budget: '', message: '' }
-const initialNewsletterForm = { email: '' }
+const SERVICE_OPTIONS = [
+  'Landing Pages',
+  'Full-Stack Web App',
+  'Mobile Application',
+  'AI & Automations',
+  'Salon / Gym / Clinic Site',
+  'Rebrand & Design',
+]
+
+const BUDGET_OPTIONS = [
+  '₹50k – ₹1.5L ($1k - $2k)',
+  '₹1.5L – ₹3.5L ($2k - $4k)',
+  '₹3.5L – ₹8L ($4k - $10k)',
+  '₹8L+ ($10k+)',
+]
+
+const initialForm = { name: '', email: '', service: SERVICE_OPTIONS[0], budget: BUDGET_OPTIONS[1], message: '' }
 
 export default function Contact() {
   const [form, setForm] = useState(initialForm)
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
-  const [newsletterForm, setNewsletterForm] = useState(initialNewsletterForm)
-  const [newsletterStatus, setNewsletterStatus] = useState('idle')
-  const [newsletterMessage, setNewsletterMessage] = useState('')
 
   function handleChange(e) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
@@ -26,133 +38,236 @@ export default function Contact() {
     setStatus('loading')
     setError('')
     try {
-      await submitContactForm(form)
+      const payload = {
+        name: form.name,
+        email: form.email,
+        budget: form.budget,
+        message: `[Service Needed: ${form.service}] ${form.message}`,
+      }
+      await submitContactForm(payload)
       setStatus('success')
       setForm(initialForm)
     } catch (err) {
       setStatus('error')
-      setError(err.message)
-    }
-  }
-
-  async function handleNewsletterSubmit(e) {
-    e.preventDefault()
-    setNewsletterStatus('loading')
-    setNewsletterMessage('')
-    try {
-      await submitNewsletterForm(newsletterForm)
-      setNewsletterStatus('success')
-      setNewsletterForm(initialNewsletterForm)
-      setNewsletterMessage('You are now subscribed to updates.')
-    } catch (err) {
-      setNewsletterStatus('error')
-      setNewsletterMessage(err.message)
+      setError(err.message || 'Something went wrong. Please try again.')
     }
   }
 
   return (
-    <Section id="contact" eyebrow="Contact">
+    <Section id="contact" className="bg-white border-t border-[#E5E7EB] py-24 lg:py-36">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div className="max-w-xl">
-            <h2 className="font-heading text-5xl leading-[0.95] text-primaryText md:text-7xl">
-              Let’s create something <span className="italic text-accent">worth</span> remembering.
+        {/* Top Header (Helaph structure: Turn ideas into reality! + circular icon) */}
+        <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between border-b border-[#E5E7EB] pb-10">
+          <div className="max-w-2xl">
+            <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#5F8D3B]">
+              START A PROJECT
+            </span>
+            <h2 className="mt-2 text-4xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-5xl lg:text-6xl leading-[1.05]">
+              Turn ideas into <span className="italic font-serif font-normal text-[#5F8D3B]">reality!</span>
             </h2>
-            <p className="mt-8 text-base leading-7 text-secondaryText md:text-lg">
-              Share your goals and we’ll map a path that feels thoughtful, focused, and ready for launch.
+            <p className="mt-4 text-sm leading-relaxed text-[#555555] sm:text-base">
+              Got an idea? Let's turn it into reality. Tell us about your project and we'll respond within 24 hours.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-secondaryText">
-              <a href="mailto:hello@wardom.studio" className="inline-flex items-center gap-2 text-primaryText/90 hover:text-accent">
-                hello@wardom.studio <ArrowUpRight size={14} />
-              </a>
-              <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-              <span>Usually replies within one business day</span>
-            </div>
-
-            <form onSubmit={handleNewsletterSubmit} className="mt-8 rounded-[24px] border border-white/10 bg-background/70 p-4 sm:p-5">
-              <p className="text-sm font-medium text-primaryText">Subscribe for updates</p>
-              <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-                <input
-                  type="email"
-                  required
-                  value={newsletterForm.email}
-                  onChange={(event) => setNewsletterForm({ email: event.target.value })}
-                  placeholder="Email address"
-                  className="w-full rounded-full border border-white/10 bg-background/70 px-4 py-3 text-sm text-primaryText placeholder:text-white/25 focus:border-accent focus:outline-none"
-                />
-                <Button type="submit" variant="outline" className="justify-center whitespace-nowrap">
-                  {newsletterStatus === 'loading' ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" /> Joining
-                    </>
-                  ) : (
-                    'Join'
-                  )}
-                </Button>
-              </div>
-              {newsletterMessage ? <p className="mt-3 text-sm text-accent" role="status">{newsletterMessage}</p> : null}
-            </form>
           </div>
 
+          <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#E5E7EB] bg-[#FAFAFA] text-[#5F8D3B]">
+            <Compass className="h-6 w-6 animate-spin-slow" />
+          </div>
+        </div>
+
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+          {/* Left Column: Numbered Step Form (Helaph structure) */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-60px' }}
-            className="rounded-[32px] border border-white/10 bg-white/[0.04] p-6 sm:p-8"
+            viewport={{ once: true }}
+            className="minimal-card p-6 sm:p-10 shadow-sm bg-white border border-[#E5E7EB]"
           >
             {status === 'success' ? (
-              <div className="flex h-full flex-col items-center justify-center py-12 text-center">
-                <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-background">
-                  <Check size={24} />
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#5F8D3B] text-white">
+                  <Check size={28} />
                 </span>
-                <h3 className="font-heading text-2xl text-primaryText">Message received</h3>
-                <p className="mt-2 max-w-sm text-sm leading-7 text-secondaryText">
-                  We’ll be in touch soon with a thoughtful next step.
+                <h3 className="text-2xl font-extrabold text-[#0F0F0F]">Message Received</h3>
+                <p className="mt-2 max-w-sm text-xs leading-relaxed text-[#555555]">
+                  Thank you! Our lead software engineer will review your project brief and respond within 24 hours.
                 </p>
-                <button onClick={() => setStatus('idle')} className="mt-6 text-sm text-accent underline">
-                  Send another message
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="mt-6 text-xs font-bold text-[#5F8D3B] underline"
+                >
+                  Send another inquiry
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <Field label="Name" name="name" value={form.name} onChange={handleChange} required />
-                  <Field label="Email" name="email" type="email" value={form.email} onChange={handleChange} required />
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {/* Step 01 */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-2">
+                    <span>01</span> What's your name?
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Type your full name..."
+                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                  />
                 </div>
-                <Field label="Budget (₹)" name="budget" value={form.budget} onChange={handleChange} placeholder="e.g. 30,000 – 2,00,000" />
-                <Field label="Project details" name="message" as="textarea" rows={4} value={form.message} onChange={handleChange} required />
 
-                {status === 'error' && <p className="text-sm text-accent" role="alert">{error}</p>}
+                {/* Step 02 */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-2">
+                    <span>02</span> What's your email address?
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="name@company.com"
+                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                  />
+                </div>
 
-                <Button type="submit" variant="primary" className="mt-2 w-full justify-center">
+                {/* Step 03 */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-3">
+                    <span>03</span> What type of service do you need?
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {SERVICE_OPTIONS.map((srv) => (
+                      <button
+                        type="button"
+                        key={srv}
+                        onClick={() => setForm((f) => ({ ...f, service: srv }))}
+                        className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                          form.service === srv
+                            ? 'bg-[#5F8D3B] text-white'
+                            : 'bg-[#FAFAFA] text-[#555555] border border-[#E5E7EB] hover:border-[#D1D5DB]'
+                        }`}
+                      >
+                        {srv}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step 04 */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-3">
+                    <span>04</span> What is your budget range?
+                  </label>
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                    {BUDGET_OPTIONS.map((b) => (
+                      <button
+                        type="button"
+                        key={b}
+                        onClick={() => setForm((f) => ({ ...f, budget: b }))}
+                        className={`rounded-xl p-2.5 text-center text-xs font-semibold transition-all ${
+                          form.budget === b
+                            ? 'bg-[#0F0F0F] text-white'
+                            : 'bg-[#FAFAFA] text-[#555555] border border-[#E5E7EB] hover:border-[#D1D5DB]'
+                        }`}
+                      >
+                        {b}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step 05 */}
+                <div>
+                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-2">
+                    <span>05</span> Tell us more about your project
+                  </label>
+                  <textarea
+                    name="message"
+                    rows={4}
+                    required
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder="Describe your project goals, key requirements, target launch timeline..."
+                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                  />
+                </div>
+
+                {status === 'error' && (
+                  <p className="text-xs font-semibold text-red-600" role="alert">
+                    {error}
+                  </p>
+                )}
+
+                <Button type="submit" variant="primary" className="!w-full justify-center !py-3.5 font-bold uppercase tracking-wider">
                   {status === 'loading' ? (
                     <>
-                      <Loader2 size={16} className="animate-spin" /> Sending
+                      <Loader2 size={16} className="animate-spin" /> SENDING MESSAGE...
                     </>
                   ) : (
-                    'Send message'
+                    <>
+                      SEND MESSAGE <Send size={14} />
+                    </>
                   )}
                 </Button>
               </form>
             )}
           </motion.div>
+
+          {/* Right Column: Studio Contact & Social Links (Helaph structure) */}
+          <div className="space-y-6">
+            <div className="minimal-card p-6 bg-white border border-[#E5E7EB] space-y-6">
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] border-b border-[#E5E7EB] pb-3">
+                STUDIO CONTACT DETAILS
+              </h3>
+
+              <div className="space-y-4 text-xs">
+                <div>
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">DIRECT EMAIL</span>
+                  <a href="mailto:hello@wardom.studio" className="block text-sm font-extrabold text-[#5F8D3B] hover:underline mt-0.5">
+                    hello@wardom.studio
+                  </a>
+                </div>
+
+                <div>
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">RESPONSE COMMITMENT</span>
+                  <p className="font-semibold text-[#0F0F0F] mt-0.5">Under 24 hours guaranteed</p>
+                </div>
+
+                <div>
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">STUDIO PRESENCE</span>
+                  <p className="font-semibold text-[#0F0F0F] mt-0.5 flex items-center gap-1">
+                    <MapPin className="h-3.5 w-3.5 text-[#5F8D3B]" /> Remote-First Global Studio
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Links (Helaph structure: Twitter/X ↗, Instagram ↗, GitHub ↗) */}
+            <div className="minimal-card p-6 bg-white border border-[#E5E7EB] space-y-3">
+              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] border-b border-[#E5E7EB] pb-3">
+                CONNECT WITH US
+              </h4>
+              <div className="flex flex-col gap-3 text-xs font-semibold text-[#555555]">
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
+                  <span className="flex items-center gap-2"><Twitter className="h-4 w-4" /> Twitter / X</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
+                  <span className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram / Visuals</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+                <a href="https://github.com" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
+                  <span className="flex items-center gap-2"><Github className="h-4 w-4" /> GitHub / Open Source</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </Container>
     </Section>
-  )
-}
-
-function Field({ label, as = 'input', ...props }) {
-  const Tag = as
-  return (
-    <label className="relative block">
-      <span className="mb-2 block font-mono-num text-xs uppercase tracking-[0.25em] text-secondaryText">
-        {label}
-      </span>
-      <Tag
-        {...props}
-        className="w-full rounded-[18px] border border-white/10 bg-background/70 px-4 py-3 text-sm text-primaryText placeholder:text-white/25 focus:border-accent focus:outline-none"
-      />
-    </label>
   )
 }

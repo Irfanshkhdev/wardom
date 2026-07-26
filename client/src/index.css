@@ -2,19 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* General Sans fallback stack (self-host the real font files in production) */
-@font-face {
-  font-family: 'General Sans';
-  src: local('Inter'), local('Helvetica Neue'), local('Arial');
-  font-weight: 400 700;
-}
-
 :root {
-  --ink: #0A0A0A;
-  --surface: #151515;
-  --cream: #F4F1EC;
-  --clay: #F97352;
-  --gold: #D9A66B;
+  --primary: #5F8D3B;
+  --accent: #7BAE47;
+  --dark: #0F0F0F;
+  --muted: #555555;
+  --border: #E5E7EB;
+  --bg-subtle: #FAFAFA;
 }
 
 * {
@@ -22,122 +16,57 @@
 }
 
 html {
-  scroll-behavior: auto; /* Lenis takes over smooth scrolling */
+  scroll-behavior: auto; /* Lenis smooth scroll handling */
 }
 
 body {
   margin: 0;
-  background-color: var(--ink);
-  color: var(--cream);
-  font-family: 'General Sans', system-ui, sans-serif;
+  background-color: #FFFFFF;
+  color: #0F0F0F;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-  cursor: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@layer base {
-  :root {
-    color-scheme: dark;
-    --color-background: #080808;
-    --color-surface: #101010;
-    --color-surface-elevated: #181818;
-    --color-primary-text: #FFFFFF;
-    --color-secondary-text: #B4B4B4;
-    --color-border: rgba(255,255,255,0.08);
-    --color-accent: #E7B96A;
-  }
-
-  body {
-    background-color: var(--color-background);
-    color: var(--color-primary-text);
-  }
-}
-
-@layer utilities {
-  .surface-panel {
-    @apply rounded-lg border border-white/10 bg-surface shadow-soft;
-  }
-
-  .surface-elevated {
-    @apply rounded-lg border border-white/10 bg-surfaceElevated shadow-elevated;
-  }
-
-  .text-muted {
-    @apply text-secondaryText;
-  }
-
-  .text-display {
-    @apply font-heading tracking-[-0.01em] text-primaryText;
-  }
-
-  .transition-design {
-    @apply transition duration-350 ease-editorial;
-  }
-}
-
-@media (max-width: 768px), (hover: none) {
-  body {
-    cursor: auto;
-  }
-  .custom-cursor {
-    display: none !important;
-  }
-}
-
-h1, h2, h3, h4 {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.05;
-}
-
-.font-mono-num {
-  font-family: 'Space Grotesk', sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #0F0F0F;
 }
 
 ::selection {
-  background: var(--clay);
-  color: var(--ink);
+  background-color: #5F8D3B;
+  color: #FFFFFF;
 }
 
-/* Noise texture overlay */
-.noise {
-  pointer-events: none;
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Light theme overrides */
-.light body,
-html.light body {
-  background-color: var(--cream);
-  color: var(--ink);
-}
-
+/* Subtle clean scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--ink);
+  background: #FAFAFA;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2b2b2b;
-  border-radius: 8px;
+  background: #D1D5DB;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
 }
 
-.text-gradient {
-  background: linear-gradient(120deg, var(--cream) 0%, var(--gold) 45%, var(--clay) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+@layer utilities {
+  .minimal-card {
+    background-color: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-.grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(244,241,236,0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(244,241,236,0.06) 1px, transparent 1px);
-  background-size: 48px 48px;
+  .minimal-card:hover {
+    border-color: #D1D5DB;
+    box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.04);
+    transform: translateY(-2px);
+  }
 }

@@ -1,168 +1,163 @@
-import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowRight, Sparkles } from 'lucide-react'
+import { ArrowUpRight, Sparkles, Dumbbell, Utensils, Stethoscope, CheckCircle2 } from 'lucide-react'
 import Container from '../components/Container'
-import { useMousePosition } from '../hooks/useMousePosition'
+import Button from '../components/Button'
 
-const reveal = {
-  hidden: { y: '110%' },
-  visible: (i) => ({
-    y: '0%',
-    transition: { duration: 0.85, delay: 0.12 * i, ease: [0.22, 1, 0.36, 1] },
-  }),
-}
+const SHOWCASE_CARDS = [
+  {
+    title: 'Velvet Beauty & Nails',
+    subtitle: 'Nail Art & Salon Web App',
+    header: 'Stylist Portfolio & Booking',
+    metric: '4.9★ (320 Reviews)',
+    icon: Sparkles,
+  },
+  {
+    title: 'Pulse Fitness & Gym',
+    subtitle: 'Gym Member App & Portal',
+    header: 'HIIT Class Pass System',
+    metric: '1,480 Active Members',
+    icon: Dumbbell,
+  },
+  {
+    title: 'Aura Bistro & Lounge',
+    subtitle: 'Cafe & Restaurant App',
+    header: 'Direct Table Reservations',
+    metric: '+310% Online Bookings',
+    icon: Utensils,
+  },
+  {
+    title: 'Luminary Medical Center',
+    subtitle: 'Doctor & Clinic Portal',
+    header: '24/7 AI Triage Assistant',
+    metric: 'HIPAA Compliant',
+    icon: Stethoscope,
+  },
+]
+
+const STATS = [
+  { value: '7+', label: 'Projects Delivered' },
+  { value: '100%', label: 'Client Satisfaction Rate' },
+  { value: '2+', label: 'Years Experience' },
+  { value: '2', label: 'Active Engineers & Designers' },
+]
 
 export default function Hero() {
-  const { x, y } = useMousePosition()
-  const glowRef = useRef(null)
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-
-  useEffect(() => {
-    if (glowRef.current) {
-      glowRef.current.style.setProperty('--gx', `${x}px`)
-      glowRef.current.style.setProperty('--gy', `${y}px`)
-    }
-  }, [x, y])
-
-  const handlePointerMove = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const offsetX = (event.clientX - rect.left) / rect.width - 0.5
-    const offsetY = (event.clientY - rect.top) / rect.height - 0.5
-
-    setTilt({ x: offsetY * -6, y: offsetX * 6 })
-  }
-
-  const handlePointerLeave = () => setTilt({ x: 0, y: 0 })
-
   return (
-    <section id="top" className="relative isolate overflow-hidden">
-      <div
-        ref={glowRef}
-        className="pointer-events-none absolute inset-0 opacity-80"
-        style={{
-          background: 'radial-gradient(700px circle at var(--gx, 50%) var(--gy, 50%), rgba(231,185,106,0.16), transparent 70%)',
-        }}
-      />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.65) 0, transparent 30%), radial-gradient(circle at 80% 12%, rgba(231,185,106,0.6) 0, transparent 35%), radial-gradient(circle at 50% 100%, rgba(255,255,255,0.35) 0, transparent 32%)' }} />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\"http://www.w3.org/2000/svg\" width=\"140\" height=\"140\" viewBox=\"0 0 140 140\"%3E%3Cfilter id=\"n\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.85\" numOctaves=\"2\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%\" height=\"100%\" filter=\"url(%23n)\"/%3E%3C/svg%3E")' }}
-      />
+    <section id="top" className="relative overflow-hidden bg-white pt-32 pb-16 lg:pt-40 lg:pb-24">
+      {/* Background Radial Glow */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 -z-10 flex justify-center">
+        <div className="h-[600px] w-[900px] bg-[radial-gradient(ellipse_at_top,_rgba(95,141,59,0.08),_transparent_70%)]" />
+      </div>
 
-      <Container className="relative z-10 grid min-h-screen items-center gap-14 py-28 md:grid-cols-[1.02fr_0.98fr] md:py-36 lg:py-40">
-        <div>
+      <Container>
+        {/* Top Pill Badge (Helaph structure) */}
+        <div className="mx-auto max-w-4xl text-center">
           <motion.div
-            initial={{ opacity: 0, y: 18 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] uppercase tracking-[0.3em] text-white/70"
+            transition={{ duration: 0.4 }}
+            className="inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-1.5 text-xs font-mono font-bold uppercase tracking-widest text-[#5F8D3B]"
           >
-            <Sparkles size={14} className="text-[#E7B96A]" />
-            Premium digital agency
+            WEB DESIGN
           </motion.div>
 
-          <h1 className="max-w-3xl font-heading text-[clamp(3rem,7vw,5.2rem)] leading-[0.9] tracking-[-0.03em] text-white">
-            {['Designing', 'clarity for', 'ambitious brands.'].map((line, index) => (
-              <span key={line} className="block overflow-hidden">
-                <motion.span
-                  custom={index}
-                  variants={reveal}
-                  initial="hidden"
-                  animate="visible"
-                  className={`block ${index === 2 ? 'text-[#E7B96A]' : ''}`}
-                >
-                  {line}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
+          {/* Main Headline (Digital Products that Scale.) */}
+          <motion.h1
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="mt-6 text-4xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-6xl lg:text-7xl leading-[1.05]"
+          >
+            Digital Products <span className="italic font-serif font-normal text-[#5F8D3B]">that Scale.</span>
+          </motion.h1>
 
+          {/* Subheadline */}
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="mt-8 max-w-xl text-base leading-7 text-white/70 md:text-lg"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-[#555555] sm:text-lg lg:text-xl"
           >
-            We craft calm, conversion-led digital experiences for modern companies that want to lead with clarity rather than noise.
+            Transforming ambitious ideas into high-converting websites and scalable digital experiences.
           </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.34, duration: 0.7 }}
-            className="mt-10 flex flex-wrap items-center gap-3"
-          >
-            <a href="#contact" className="inline-flex items-center gap-2 rounded-full bg-[#E7B96A] px-6 py-3 text-sm font-medium text-[#080808] transition-transform duration-300 hover:-translate-y-0.5">
-              Book a discovery call
-              <ArrowRight size={16} />
-            </a>
-            <a href="#work" className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] px-6 py-3 text-sm font-medium text-white/80 transition-colors hover:border-white/20 hover:text-white">
-              View selected work
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.48, duration: 0.7 }}
-            className="mt-10 flex flex-wrap gap-6 border-t border-white/10 pt-6 text-sm text-white/60"
-          >
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-[#E7B96A]" />14+ launches</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-white/40" />Remote-first teams</div>
-            <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-white/40" />Fast response</div>
-          </motion.div>
         </div>
 
-        <div className="flex justify-center md:justify-end">
-          <motion.div
-            onMouseMove={handlePointerMove}
-            onMouseLeave={handlePointerLeave}
-            animate={{ rotateX: tilt.x, rotateY: tilt.y, y: [0, -8, 0] }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], repeat: Infinity, repeatType: 'mirror' }}
-            className="relative w-full max-w-[430px]"
-          >
-            <div className="absolute inset-0 rounded-[36px] border border-white/10 bg-white/[0.03] shadow-[0_30px_80px_rgba(0,0,0,0.35)]" />
-            <div className="relative h-[500px] rounded-[32px] border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0.04))] p-6 backdrop-blur-xl">
-              <div className="absolute inset-6 rounded-[24px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(231,185,106,0.2),transparent_55%),rgba(8,8,8,0.95)]" />
-              <div className="relative flex h-full flex-col justify-between p-1">
-                <div className="flex items-center justify-between px-1">
-                  <p className="text-[11px] uppercase tracking-[0.3em] text-white/50">Studio briefing</p>
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#E7B96A]" />
+        {/* 4 Showcase Gallery Mockup Cards (Helaph structure) */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {SHOWCASE_CARDS.map((card) => {
+            const Icon = card.icon
+            return (
+              <div
+                key={card.title}
+                className="minimal-card relative overflow-hidden p-5 flex flex-col justify-between min-h-[280px] group bg-white"
+              >
+                <div>
+                  <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+                    <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#5F8D3B]">
+                      SHOWCASE
+                    </span>
+                    <Icon className="h-4 w-4 text-[#999999]" />
+                  </div>
+
+                  <h3 className="mt-4 text-base font-extrabold text-[#0F0F0F] group-hover:text-[#5F8D3B] transition-colors">
+                    {card.title}
+                  </h3>
+                  <p className="text-xs text-[#555555] mt-1">{card.subtitle}</p>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="rounded-[20px] border border-white/10 bg-black/35 p-5">
-                    <div className="h-2.5 w-24 rounded-full bg-white/20" />
-                    <div className="mt-4 h-2.5 w-full rounded-full bg-white/10" />
-                    <div className="mt-2 h-2.5 w-4/5 rounded-full bg-white/10" />
-                    <div className="mt-2 h-2.5 w-3/5 rounded-full bg-white/10" />
-                  </div>
-
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-[18px] border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-[10px] uppercase tracking-[0.3em] text-white/45">Focus</p>
-                      <p className="mt-2 text-sm text-white/80">Thoughtful positioning</p>
-                    </div>
-                    <div className="rounded-[18px] border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-[10px] uppercase tracking-[0.3em] text-white/45">Craft</p>
-                      <p className="mt-2 text-sm text-white/80">Elegant systems</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-end justify-between px-1">
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.3em] text-white/45">Launch-ready</p>
-                    <p className="mt-1 text-xl font-semibold text-white">A calm system</p>
-                  </div>
-                  <div className="rounded-full border border-white/10 bg-white/[0.06] p-3 text-[#E7B96A]">
-                    <ArrowRight size={18} />
+                {/* Inner Mockup Frame */}
+                <div className="mt-6 rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] p-4">
+                  <span className="block text-[10px] font-mono font-bold uppercase text-[#999999]">
+                    {card.header}
+                  </span>
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-xs font-extrabold text-[#0F0F0F]">{card.metric}</span>
+                    <CheckCircle2 className="h-3.5 w-3.5 text-[#5F8D3B]" />
                   </div>
                 </div>
               </div>
+            )
+          })}
+        </motion.div>
+
+        {/* Action Buttons Below Showcase (Helaph structure: VIEW WORK ↗ + BOOK A DISCOVERY CALL ↗) */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-10 flex flex-wrap items-center justify-center gap-4"
+        >
+          <Button href="#work" variant="secondary" className="!px-7 !py-3.5 !text-xs font-bold uppercase tracking-wider">
+            VIEW WORK <ArrowUpRight className="h-4 w-4" />
+          </Button>
+          <Button href="#contact" variant="primary" className="!px-8 !py-3.5 !text-xs font-bold uppercase tracking-wider">
+            BOOK A DISCOVERY CALL <ArrowUpRight className="h-4 w-4" />
+          </Button>
+        </motion.div>
+
+        {/* Horizontal Stats Bar Below Hero (Helaph structure: 4 equal columns divided by hairlines) */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-16 grid grid-cols-2 divide-x divide-[#E5E7EB] border-t border-[#E5E7EB] pt-10 sm:grid-cols-4"
+        >
+          {STATS.map((stat, i) => (
+            <div key={stat.label} className={`px-4 text-center ${i === 0 ? 'pl-0' : ''}`}>
+              <div className="text-3xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-4xl">
+                {stat.value}
+              </div>
+              <p className="mt-1 text-xs font-medium text-[#555555]">
+                {stat.label}
+              </p>
             </div>
-          </motion.div>
-        </div>
+          ))}
+        </motion.div>
       </Container>
     </section>
   )

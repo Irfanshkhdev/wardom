@@ -4,50 +4,74 @@ import Container from '../components/Container'
 
 const STEPS = [
   {
-    num: '01',
-    title: 'Discover',
-    description: 'We start with the business context, audience, and product goals so the plan is grounded before any design choices are made.',
+    number: '1',
+    title: 'Discovery',
+    description: 'We learn about your business goals, target clients, and technical requirements.',
   },
   {
-    num: '02',
-    title: 'Shape',
-    description: 'A refined experience framework emerges: structure, voice, interaction language, and the first design system decisions.',
+    number: '2',
+    title: 'Design',
+    description: 'Bespoke UI design, mobile touch patterns, and conversion layout math.',
   },
   {
-    num: '03',
-    title: 'Build',
-    description: 'We translate the concept into a production-ready product with thoughtful frontend architecture and high-quality code.',
+    number: '3',
+    title: 'Development',
+    description: 'Clean full-stack software engineering, booking system, & database integration.',
   },
   {
-    num: '04',
+    number: '4',
     title: 'Launch',
-    description: 'The release is prepared with care, then supported through iteration as the product grows and evolves.',
+    description: 'Cross-browser testing, Lighthouse 100 speed optimization, and live domain go-live.',
+  },
+  {
+    number: '5',
+    title: 'Support',
+    description: '30-day post-launch warranty, ongoing growth management, and feature updates.',
   },
 ]
 
 export default function Process() {
   return (
-    <Section id="process" eyebrow="Process">
+    <Section id="process" label="Simple Process" className="bg-[#FAFAFA] border-y border-[#E5E7EB]">
       <Container>
-        <div className="mb-16 max-w-3xl">
-          <h2 className="font-heading text-4xl leading-tight text-primaryText md:text-6xl">
-            A disciplined path from <span className="italic text-accent">brief</span> to launch.
+        <div className="mb-14 text-center max-w-3xl mx-auto">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#5F8D3B]">
+            HOW WE WORK
+          </span>
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-4xl lg:text-5xl leading-[1.1]">
+            Our simple 5-step process.
           </h2>
+          <p className="mt-4 text-sm leading-relaxed text-[#555555] sm:text-base">
+            No complicated jargon or endless meetings. We take care of everything from start to finish.
+          </p>
         </div>
 
-        <div className="relative grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-          {STEPS.map((step, i) => (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {STEPS.map((step, index) => (
             <motion.div
-              key={step.num}
-              initial={{ opacity: 0, y: 30 }}
+              key={step.number}
+              initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="rounded-[24px] border border-white/10 bg-white/[0.04] p-6"
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
+              className="minimal-card p-6 flex flex-col justify-between bg-white"
             >
-              <span className="mb-6 block font-mono-num text-sm text-accent">{step.num}</span>
-              <h3 className="mb-3 font-heading text-2xl text-primaryText">{step.title}</h3>
-              <p className="text-sm leading-7 text-secondaryText">{step.description}</p>
+              <div>
+                <div className="flex items-center justify-between border-b border-[#E5E7EB] pb-3">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#5F8D3B] text-xs font-bold text-white">
+                    {step.number}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#999999]">Step {step.number}</span>
+                </div>
+
+                <h3 className="mt-4 text-base font-extrabold text-[#0F0F0F]">
+                  {step.title}
+                </h3>
+
+                <p className="mt-2 text-xs leading-relaxed text-[#555555]">
+                  {step.description}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

@@ -12,6 +12,8 @@ import {
   Settings,
   Sparkles,
   Trash2,
+  ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react'
 
 import AdminPageLayout from './components/AdminPageLayout'
@@ -37,7 +39,7 @@ import {
 } from '../utils/adminApi'
 
 const sidebarLinks = [
-  { label: 'Dashboard', to: '', icon: LayoutGrid },
+  { label: 'Overview', to: '', icon: LayoutGrid },
   { label: 'Projects', to: 'projects', icon: FolderKanban },
   { label: 'Testimonials', to: 'testimonials', icon: Sparkles },
   { label: 'Messages', to: 'messages', icon: MessageSquareText },
@@ -47,16 +49,17 @@ const sidebarLinks = [
 
 function AdminShell({ me, onLogout, children }) {
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(231,185,106,0.18),transparent_28%),linear-gradient(135deg,#060606,#111111)] px-4 py-4 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-4 lg:flex-row">
-        <aside className="w-full min-w-0 rounded-[30px] border border-white/10 bg-white/[0.05] p-4 backdrop-blur-2xl lg:w-72 lg:p-5">
-          <div className="mb-8 flex items-center gap-3 rounded-[22px] border border-white/10 bg-black/20 p-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#E7B96A]/30 bg-[#E7B96A]/15 text-sm font-semibold text-[#E7B96A]">
+    <div className="min-h-screen bg-[#09090B] px-4 py-6 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-6 lg:flex-row">
+        {/* Sidebar */}
+        <aside className="w-full min-w-0 rounded-2xl border border-[#27272A] bg-[#121215] p-5 lg:w-64">
+          <div className="mb-6 flex items-center gap-3 border-b border-[#27272A] pb-5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#5F8D3B] text-sm font-black text-white">
               W
             </div>
             <div>
-              <p className="text-sm font-semibold">WARDOM Admin</p>
-              <p className="text-xs text-white/55">{me?.email || 'Authenticated'}</p>
+              <p className="text-xs font-bold text-white">WARDOM Admin</p>
+              <p className="text-[11px] text-zinc-400">{me?.email || 'Authenticated'}</p>
             </div>
           </div>
 
@@ -67,8 +70,8 @@ function AdminShell({ me, onLogout, children }) {
                 to={item.to}
                 end={item.to === ''}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-full px-3 py-2.5 text-sm transition-colors ${
-                    isActive ? 'bg-white/12 text-white' : 'text-white/70 hover:bg-white/[0.06] hover:text-white'
+                  `flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-colors ${
+                    isActive ? 'bg-[#5F8D3B] text-white shadow-sm' : 'text-zinc-400 hover:bg-[#1C1C20] hover:text-white'
                   }`
                 }
               >
@@ -78,16 +81,19 @@ function AdminShell({ me, onLogout, children }) {
             ))}
           </nav>
 
-          <button
-            onClick={onLogout}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-3 py-2.5 text-sm text-white/80 transition-colors hover:bg-white/[0.08]"
-          >
-            <LogOut size={16} />
-            Sign out
-          </button>
+          <div className="mt-8 border-t border-[#27272A] pt-4">
+            <button
+              onClick={onLogout}
+              className="flex w-full items-center justify-center gap-2 rounded-xl border border-[#27272A] bg-[#18181B] px-3 py-2 text-xs font-semibold text-zinc-300 transition-colors hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20"
+            >
+              <LogOut size={14} />
+              Sign out
+            </button>
+          </div>
         </aside>
 
-        <main className="min-w-0 flex-1 rounded-[32px] border border-white/10 bg-black/20 p-4 backdrop-blur-2xl sm:p-6 lg:p-8">
+        {/* Main Console Content */}
+        <main className="min-w-0 flex-1 rounded-2xl border border-[#27272A] bg-[#121215] p-6 lg:p-8">
           {children}
         </main>
       </div>
@@ -97,18 +103,23 @@ function AdminShell({ me, onLogout, children }) {
 
 function DashboardPage({ projects, testimonials, messages, subscribers }) {
   const stats = [
-    { label: 'Projects', value: projects.length, tint: 'bg-[#E7B96A]/15 text-[#E7B96A]' },
-    { label: 'Testimonials', value: testimonials.length, tint: 'bg-white/10 text-white' },
-    { label: 'Messages', value: messages.length, tint: 'bg-white/10 text-white' },
-    { label: 'Subscribers', value: subscribers.length, tint: 'bg-[#E7B96A]/15 text-[#E7B96A]' },
+    { label: 'Active Projects', value: projects.length, tint: 'border-[#5F8D3B]/30 bg-[#5F8D3B]/10 text-[#7BAE47]' },
+    { label: 'Client Reviews', value: testimonials.length, tint: 'border-zinc-700 bg-zinc-800/40 text-white' },
+    { label: 'Inbound Messages', value: messages.length, tint: 'border-zinc-700 bg-zinc-800/40 text-white' },
+    { label: 'Subscribers', value: subscribers.length, tint: 'border-[#5F8D3B]/30 bg-[#5F8D3B]/10 text-[#7BAE47]' },
   ]
 
   return (
     <AdminPageLayout>
       <PageHeader
-        eyebrow="Operations"
+        eyebrow="Console Overview"
         title="Dashboard"
-        action={<Link to="projects" className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white/80">Manage content <ArrowRight size={16} /></Link>}
+        description="Monitor system metrics, manage public case studies, and review inbound client inquiries."
+        action={
+          <Link to="projects" className="inline-flex items-center gap-2 rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-2 text-xs font-semibold text-white hover:bg-[#27272A]">
+            Manage Projects <ArrowRight size={14} />
+          </Link>
+        }
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -117,23 +128,25 @@ function DashboardPage({ projects, testimonials, messages, subscribers }) {
         ))}
       </div>
 
-      <FormCard title="Recent inquiries">
+      <FormCard title="Recent Inquiries">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">Latest messages</h2>
-          <Link to="messages" className="text-sm text-[#E7B96A]">View all</Link>
+          <h2 className="text-sm font-bold text-white">Latest Contact Submissions</h2>
+          <Link to="messages" className="text-xs font-semibold text-[#7BAE47] hover:underline">View All Messages &rarr;</Link>
         </div>
 
         <div className="mt-4 space-y-3">
           {messages.slice(0, 3).length === 0 ? (
-            <EmptyState title="No messages yet" description="Incoming inquiries will appear here once the contact form is used." />
+            <EmptyState title="No messages yet" description="Incoming inquiries will appear here once the contact form is submitted." />
           ) : (
-            messages.slice(0, 3).map((message) => (
-              <div key={message.id} className="flex items-center justify-between rounded-[18px] border border-white/10 bg-black/20 px-4 py-3">
+            messages.slice(0, 3).map((msg) => (
+              <div key={msg.id} className="flex items-center justify-between rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-3 text-xs">
                 <div>
-                  <p className="font-medium text-white">{message.name}</p>
-                  <p className="text-sm text-white/60">{message.email}</p>
+                  <p className="font-bold text-white">{msg.name}</p>
+                  <p className="text-zinc-400">{msg.email}</p>
                 </div>
-                <p className="text-sm text-white/55">{message.budget || 'No budget'}</p>
+                <span className="rounded bg-zinc-800 px-2.5 py-1 text-zinc-300 font-mono text-[11px]">
+                  {msg.budget || 'Inquiry'}
+                </span>
               </div>
             ))
           )}
@@ -183,21 +196,21 @@ function ProjectsPage() {
     }
   }
 
-  const handleEdit = (project) => {
-    setEditingId(project.id)
+  const handleEdit = (p) => {
+    setEditingId(p.id)
     setForm({
-      name: project.name,
-      category: project.category,
-      year: project.year,
-      image_url: project.image_url || '',
-      live_url: project.live_url || '',
-      order: project.order || 0,
+      name: p.name,
+      category: p.category,
+      year: p.year,
+      image_url: p.image_url || '',
+      live_url: p.live_url || '',
+      order: p.order || 0,
     })
   }
 
-  const handleDelete = async (projectId) => {
+  const handleDelete = async (id) => {
     try {
-      await deleteProject(projectId)
+      await deleteProject(id)
       setMessage('Project removed')
       loadProjects()
     } catch (error) {
@@ -207,47 +220,45 @@ function ProjectsPage() {
 
   return (
     <AdminPageLayout>
-      <PageHeader eyebrow="Content" title="Projects" description="Create, edit, and feature the work that should appear publicly on the homepage." />
+      <PageHeader eyebrow="Portfolio Management" title="Projects" description="Create, edit, and feature client projects on the live website." />
 
-      {message ? <p className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white/70">{message}</p> : null}
+      {message ? <p className="rounded-xl border border-[#5F8D3B]/40 bg-[#5F8D3B]/10 px-4 py-2 text-xs font-semibold text-[#7BAE47]">{message}</p> : null}
 
-      <form onSubmit={handleSubmit} className="grid gap-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-5 lg:grid-cols-2">
-        <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Project name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} required />
-        <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Category" value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })} required />
-        <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Year" value={form.year} onChange={(event) => setForm({ ...form, year: event.target.value })} required />
-        <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Image URL" value={form.image_url} onChange={(event) => setForm({ ...form, image_url: event.target.value })} />
-        <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Live URL" value={form.live_url} onChange={(event) => setForm({ ...form, live_url: event.target.value })} />
-        <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" type="number" placeholder="Order" value={form.order} onChange={(event) => setForm({ ...form, order: Number(event.target.value) })} />
-        <label className="flex items-center gap-3 rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/70 lg:col-span-2">
-          <input type="checkbox" checked={Boolean(form.featured)} onChange={(event) => setForm({ ...form, featured: event.target.checked })} />
-          Featured on homepage
-        </label>
-        <div className="lg:col-span-2 flex gap-3">
-          <button type="submit" className="inline-flex items-center gap-2 rounded-full bg-[#E7B96A] px-4 py-2.5 text-sm font-medium text-[#090909]">
-            <Plus size={16} /> {editingId ? 'Save changes' : 'Create project'}
+      <form onSubmit={handleSubmit} className="grid gap-4 rounded-2xl border border-[#27272A] bg-[#18181B] p-5 lg:grid-cols-2 text-xs">
+        <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Project name (e.g. Velvet Nails)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+        <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Category (e.g. Salon & Spa)" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} required />
+        <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Year (e.g. 2026)" value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} required />
+        <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Image URL" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} />
+        <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Live URL" value={form.live_url} onChange={(e) => setForm({ ...form, live_url: e.target.value })} />
+        <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 outline-none focus:border-[#5F8D3B]" type="number" placeholder="Order" value={form.order} onChange={(e) => setForm({ ...form, order: Number(e.target.value) })} />
+
+        <div className="lg:col-span-2 flex gap-3 mt-2">
+          <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-[#5F8D3B] px-4 py-2.5 font-bold text-white hover:bg-[#527C32]">
+            <Plus size={14} /> {editingId ? 'Save changes' : 'Create project'}
           </button>
-          {editingId ? <button type="button" className="rounded-full border border-white/10 px-4 py-2.5 text-sm" onClick={() => { setEditingId(null); setForm({ name: '', category: '', year: '', image_url: '', live_url: '', order: 0 }) }}>Cancel</button> : null}
+          {editingId && (
+            <button type="button" className="rounded-xl border border-[#27272A] px-4 py-2.5 font-semibold text-zinc-300 hover:bg-[#27272A]" onClick={() => { setEditingId(null); setForm({ name: '', category: '', year: '', image_url: '', live_url: '', order: 0 }) }}>
+              Cancel
+            </button>
+          )}
         </div>
       </form>
 
       <div className="space-y-3">
-        {loading ? <p className="text-sm text-white/60">Loading projects…</p> : null}
-        {!loading && projects.length === 0 ? (
-          <EmptyState title="No projects yet" description="Add your first project and it will appear in the public portfolio." />
-        ) : null}
-        {projects.map((project) => (
-          <div key={project.id} className="flex flex-col gap-3 rounded-[24px] border border-white/10 bg-white/[0.04] p-4 sm:flex-row sm:items-center sm:justify-between">
+        {loading ? <p className="text-xs text-zinc-400">Loading projects…</p> : null}
+        {!loading && projects.length === 0 ? <EmptyState title="No custom DB projects" description="Static case studies are active. Add custom projects here." /> : null}
+        {projects.map((p) => (
+          <div key={p.id} className="flex items-center justify-between rounded-xl border border-[#27272A] bg-[#18181B] p-4 text-xs">
             <div>
-              <p className="font-semibold text-white">{project.name}</p>
-              <p className="text-sm text-white/60">{project.category} · {project.year}</p>
-              {project.featured ? <p className="mt-1 text-xs uppercase tracking-[0.24em] text-[#E7B96A]">Featured</p> : null}
+              <p className="font-bold text-white">{p.name}</p>
+              <p className="text-zinc-400">{p.category} · {p.year}</p>
             </div>
             <div className="flex gap-2">
-              <button onClick={() => handleEdit(project)} className="rounded-full border border-white/10 bg-white/[0.05] p-2.5 text-white/80">
-                <Pencil size={15} />
+              <button onClick={() => handleEdit(p)} className="rounded-lg border border-[#27272A] bg-[#09090B] p-2 text-zinc-300 hover:text-white">
+                <Pencil size={14} />
               </button>
-              <button onClick={() => handleDelete(project.id)} className="rounded-full border border-white/10 bg-white/[0.05] p-2.5 text-white/80">
-                <Trash2 size={15} />
+              <button onClick={() => handleDelete(p.id)} className="rounded-lg border border-[#27272A] bg-[#09090B] p-2 text-zinc-300 hover:text-red-400">
+                <Trash2 size={14} />
               </button>
             </div>
           </div>
@@ -297,20 +308,20 @@ function TestimonialsPage() {
     }
   }
 
-  const handleEdit = (testimonial) => {
-    setEditingId(testimonial.id)
+  const handleEdit = (t) => {
+    setEditingId(t.id)
     setForm({
-      quote: testimonial.quote,
-      name: testimonial.name,
-      role: testimonial.role,
-      rating: testimonial.rating || 5,
-      video_url: testimonial.video_url || '',
+      quote: t.quote,
+      name: t.name,
+      role: t.role,
+      rating: t.rating || 5,
+      video_url: t.video_url || '',
     })
   }
 
-  const handleDelete = async (testimonialId) => {
+  const handleDelete = async (id) => {
     try {
-      await deleteTestimonial(testimonialId)
+      await deleteTestimonial(id)
       setMessage('Testimonial removed')
       loadTestimonials()
     } catch (error) {
@@ -320,45 +331,43 @@ function TestimonialsPage() {
 
   return (
     <AdminPageLayout>
-      <PageHeader eyebrow="Growth" title="Testimonials" description="Manage the social proof that appears on the public site." />
+      <PageHeader eyebrow="Social Proof" title="Testimonials" description="Manage client reviews and ratings shown on the homepage." />
 
-      {message ? <p className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white/70">{message}</p> : null}
+      {message ? <p className="rounded-xl border border-[#5F8D3B]/40 bg-[#5F8D3B]/10 px-4 py-2 text-xs font-semibold text-[#7BAE47]">{message}</p> : null}
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-        <textarea className="min-h-[110px] w-full rounded-[20px] border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Quote" value={form.quote} onChange={(event) => setForm({ ...form, quote: event.target.value })} required />
-        <div className="grid gap-4 md:grid-cols-2">
-          <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} required />
-          <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Role" value={form.role} onChange={(event) => setForm({ ...form, role: event.target.value })} required />
-          <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" type="number" min="1" max="5" placeholder="Rating" value={form.rating} onChange={(event) => setForm({ ...form, rating: Number(event.target.value) })} />
-          <input className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" placeholder="Video URL" value={form.video_url} onChange={(event) => setForm({ ...form, video_url: event.target.value })} />
+      <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#27272A] bg-[#18181B] p-5 text-xs">
+        <textarea className="min-h-[90px] w-full rounded-xl border border-[#27272A] bg-[#09090B] p-3 text-xs outline-none focus:border-[#5F8D3B]" placeholder="Client quote" value={form.quote} onChange={(e) => setForm({ ...form, quote: e.target.value })} required />
+        <div className="grid gap-3 md:grid-cols-2">
+          <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-3.5 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Client name (e.g. Sarah Vance)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+          <input className="rounded-xl border border-[#27272A] bg-[#09090B] px-3.5 py-2.5 outline-none focus:border-[#5F8D3B]" placeholder="Role & Company" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} required />
         </div>
         <div className="flex gap-3">
-          <button type="submit" className="inline-flex items-center gap-2 rounded-full bg-[#E7B96A] px-4 py-2.5 text-sm font-medium text-[#090909]">
-            <Plus size={16} /> {editingId ? 'Save testimonial' : 'Create testimonial'}
+          <button type="submit" className="inline-flex items-center gap-2 rounded-xl bg-[#5F8D3B] px-4 py-2.5 font-bold text-white hover:bg-[#527C32]">
+            <Plus size={14} /> {editingId ? 'Save testimonial' : 'Create testimonial'}
           </button>
-          {editingId ? <button type="button" className="rounded-full border border-white/10 px-4 py-2.5 text-sm" onClick={() => { setEditingId(null); setForm({ quote: '', name: '', role: '', rating: 5, video_url: '' }) }}>Cancel</button> : null}
+          {editingId && (
+            <button type="button" className="rounded-xl border border-[#27272A] px-4 py-2.5 font-semibold text-zinc-300" onClick={() => { setEditingId(null); setForm({ quote: '', name: '', role: '', rating: 5, video_url: '' }) }}>
+              Cancel
+            </button>
+          )}
         </div>
       </form>
 
       <div className="space-y-3">
-        {loading ? <p className="text-sm text-white/60">Loading testimonials…</p> : null}
-        {!loading && testimonials.length === 0 ? (
-          <EmptyState title="No testimonials yet" description="Add a short quote and it will appear in the public testimonials section." />
-        ) : null}
-        {testimonials.map((testimonial) => (
-          <div key={testimonial.id} className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4">
+        {loading ? <p className="text-xs text-zinc-400">Loading testimonials…</p> : null}
+        {testimonials.map((t) => (
+          <div key={t.id} className="rounded-xl border border-[#27272A] bg-[#18181B] p-4 text-xs">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-sm text-white/80">“{testimonial.quote}”</p>
-                <p className="mt-2 text-sm font-semibold text-white">{testimonial.name}</p>
-                <p className="text-sm text-white/55">{testimonial.role}</p>
+                <p className="text-zinc-300">“{t.quote}”</p>
+                <p className="mt-2 font-bold text-white">{t.name} · <span className="text-zinc-400 font-normal">{t.role}</span></p>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleEdit(testimonial)} className="rounded-full border border-white/10 bg-white/[0.05] p-2.5 text-white/80">
-                  <Pencil size={15} />
+                <button onClick={() => handleEdit(t)} className="rounded-lg border border-[#27272A] bg-[#09090B] p-2 text-zinc-300 hover:text-white">
+                  <Pencil size={14} />
                 </button>
-                <button onClick={() => handleDelete(testimonial.id)} className="rounded-full border border-white/10 bg-white/[0.05] p-2.5 text-white/80">
-                  <Trash2 size={15} />
+                <button onClick={() => handleDelete(t.id)} className="rounded-lg border border-[#27272A] bg-[#09090B] p-2 text-zinc-300 hover:text-red-400">
+                  <Trash2 size={14} />
                 </button>
               </div>
             </div>
@@ -384,29 +393,30 @@ function MessagesPage() {
         setLoading(false)
       }
     }
-
     loadMessages()
   }, [])
 
   return (
     <AdminPageLayout>
-      <PageHeader eyebrow="Inbound" title="Messages" description="Review incoming inquiries and keep the inbox organized." />
+      <PageHeader eyebrow="Inbound Leads" title="Messages" description="Review incoming project inquiry form submissions." />
 
-      {loading ? <p className="text-sm text-white/60">Loading messages…</p> : null}
+      {loading ? <p className="text-xs text-zinc-400">Loading messages…</p> : null}
       <div className="space-y-3">
         {messages.length === 0 ? (
-          <EmptyState title="No messages yet" description="New contact submissions will appear here for review." />
+          <EmptyState title="No messages yet" description="Incoming inquiries will appear here when visitors submit the contact form." />
         ) : (
-          messages.map((message) => (
-            <div key={message.id} className="rounded-[24px] border border-white/10 bg-white/[0.04] p-4">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          messages.map((m) => (
+            <div key={m.id} className="rounded-xl border border-[#27272A] bg-[#18181B] p-4 text-xs">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="font-semibold text-white">{message.name}</p>
-                  <p className="text-sm text-white/60">{message.email}</p>
+                  <p className="font-bold text-white">{m.name}</p>
+                  <p className="text-zinc-400">{m.email}</p>
                 </div>
-                <p className="text-sm text-white/55">{message.budget || 'No budget indicated'}</p>
+                <span className="rounded bg-[#5F8D3B]/20 text-[#7BAE47] px-2.5 py-1 font-mono text-[11px]">
+                  {m.budget || 'Inquiry'}
+                </span>
               </div>
-              <p className="mt-3 text-sm leading-7 text-white/70">{message.message}</p>
+              <p className="mt-3 leading-relaxed text-zinc-300 border-t border-[#27272A] pt-3">{m.message}</p>
             </div>
           ))
         )}
@@ -430,24 +440,23 @@ function NewsletterPage() {
         setLoading(false)
       }
     }
-
     loadSubscribers()
   }, [])
 
   return (
     <AdminPageLayout>
-      <PageHeader eyebrow="Audience" title="Newsletter" description="Review and manage subscribers from the public newsletter form." />
+      <PageHeader eyebrow="Audience" title="Newsletter Subscribers" description="Manage email subscribers from the public website." />
 
-      {loading ? <p className="text-sm text-white/60">Loading subscribers…</p> : null}
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-        <p className="text-sm text-white/60">{subscribers.length} active subscribers</p>
-        <div className="mt-4 space-y-2">
+      {loading ? <p className="text-xs text-zinc-400">Loading subscribers…</p> : null}
+      <div className="rounded-2xl border border-[#27272A] bg-[#18181B] p-5 text-xs">
+        <p className="font-semibold text-zinc-400">{subscribers.length} total subscribers</p>
+        <div className="mt-3 space-y-2">
           {subscribers.length === 0 ? (
-            <EmptyState title="No subscribers yet" description="The list will populate as visitors sign up from the public website." />
+            <EmptyState title="No subscribers yet" description="Subscribers will appear here when visitors sign up." />
           ) : (
-            subscribers.map((subscriber) => (
-              <div key={subscriber.id} className="rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/70">
-                {subscriber.email}
+            subscribers.map((s) => (
+              <div key={s.id} className="rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 text-zinc-300">
+                {s.email}
               </div>
             ))
           )}
@@ -471,7 +480,6 @@ function SettingsPage() {
         setMessage(error.message)
       }
     }
-
     loadProfile()
   }, [])
 
@@ -480,7 +488,7 @@ function SettingsPage() {
     try {
       await updateAdminPassword(form)
       setForm({ current_password: '', new_password: '' })
-      setMessage('Password updated')
+      setMessage('Password updated successfully')
     } catch (error) {
       setMessage(error.message)
     }
@@ -488,19 +496,21 @@ function SettingsPage() {
 
   return (
     <AdminPageLayout>
-      <PageHeader eyebrow="Account" title="Settings" description="Manage the account profile and update the admin password securely." />
+      <PageHeader eyebrow="Security" title="Account Settings" description="Update your admin password and manage account credentials." />
 
-      {message ? <p className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-sm text-white/70">{message}</p> : null}
+      {message ? <p className="rounded-xl border border-[#5F8D3B]/40 bg-[#5F8D3B]/10 px-4 py-2 text-xs font-semibold text-[#7BAE47]">{message}</p> : null}
 
-      <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-        <p className="text-sm uppercase tracking-[0.3em] text-white/55">Profile</p>
-        <p className="mt-3 text-lg font-semibold text-white">{profile.email}</p>
+      <div className="rounded-2xl border border-[#27272A] bg-[#18181B] p-5 text-xs">
+        <span className="font-mono uppercase tracking-wider text-zinc-400">Authenticated Email</span>
+        <p className="mt-1 text-sm font-bold text-white">{profile.email}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-5">
-        <input className="w-full rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" type="password" placeholder="Current password" value={form.current_password} onChange={(event) => setForm({ ...form, current_password: event.target.value })} required />
-        <input className="w-full rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" type="password" placeholder="New password" value={form.new_password} onChange={(event) => setForm({ ...form, new_password: event.target.value })} required />
-        <button type="submit" className="rounded-full bg-[#E7B96A] px-4 py-2.5 text-sm font-medium text-[#090909]">Update password</button>
+      <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#27272A] bg-[#18181B] p-5 text-xs">
+        <input className="w-full rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 text-xs outline-none focus:border-[#5F8D3B]" type="password" placeholder="Current password" value={form.current_password} onChange={(e) => setForm({ ...form, current_password: e.target.value })} required />
+        <input className="w-full rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-2.5 text-xs outline-none focus:border-[#5F8D3B]" type="password" placeholder="New password" value={form.new_password} onChange={(e) => setForm({ ...form, new_password: e.target.value })} required />
+        <button type="submit" className="rounded-xl bg-[#5F8D3B] px-4 py-2.5 font-bold text-white hover:bg-[#527C32]">
+          Update Password
+        </button>
       </form>
     </AdminPageLayout>
   )
@@ -578,22 +588,30 @@ export default function AdminApp() {
   }
 
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center bg-[#060606] text-sm text-white/70">Loading admin console…</div>
+    return <div className="flex min-h-screen items-center justify-center bg-[#09090B] text-xs font-semibold text-zinc-400">Loading WARDOM console…</div>
   }
 
   if (!token) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_left,rgba(231,185,106,0.18),transparent_28%),linear-gradient(135deg,#060606,#111111)] px-4">
-        <div className="w-full max-w-md rounded-[32px] border border-white/10 bg-white/[0.05] p-6 backdrop-blur-2xl">
-          <p className="text-sm uppercase tracking-[0.3em] text-white/55">WARDOM Studio</p>
-          <h1 className="mt-3 text-2xl font-semibold text-white">Admin access</h1>
-          <p className="mt-2 text-sm text-white/65">Sign in with the existing admin credentials to manage projects, testimonials, messages and newsletter subscribers.</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#09090B] px-4 text-white">
+        <div className="w-full max-w-sm rounded-2xl border border-[#27272A] bg-[#121215] p-6 sm:p-8 shadow-xl">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#5F8D3B] text-xs font-extrabold text-white">
+              W
+            </span>
+            <span className="font-extrabold tracking-tight text-white text-sm">WARDOM Studio</span>
+          </div>
 
-          <form onSubmit={handleLogin} className="mt-6 space-y-4">
-            <input className="w-full rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" name="email" type="email" placeholder="Email" required />
-            <input className="w-full rounded-full border border-white/10 bg-black/20 px-4 py-3 text-sm outline-none" name="password" type="password" placeholder="Password" required />
-            {error ? <p className="text-sm text-[#E7B96A]">{error}</p> : null}
-            <button className="w-full rounded-full bg-[#E7B96A] px-4 py-3 text-sm font-medium text-[#090909]">Sign in</button>
+          <h1 className="text-xl font-bold text-white">Admin Console</h1>
+          <p className="mt-1 text-xs text-zinc-400">Sign in to manage portfolio projects, client testimonials, and messages.</p>
+
+          <form onSubmit={handleLogin} className="mt-6 space-y-3 text-xs">
+            <input className="w-full rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-3 outline-none focus:border-[#5F8D3B]" name="email" type="email" placeholder="Admin Email" required />
+            <input className="w-full rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-3 outline-none focus:border-[#5F8D3B]" name="password" type="password" placeholder="Password" required />
+            {error && <p className="text-xs font-semibold text-red-400" role="alert">{error}</p>}
+            <button className="w-full rounded-xl bg-[#5F8D3B] px-4 py-3 text-xs font-bold text-white hover:bg-[#527C32]">
+              Sign In to Console
+            </button>
           </form>
         </div>
       </div>

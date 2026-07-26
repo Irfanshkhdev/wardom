@@ -1,25 +1,29 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Plus } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Plus, Minus } from 'lucide-react'
 import Section from '../components/Section'
 import Container from '../components/Container'
 
 const FAQS = [
   {
-    q: 'What kinds of projects do you take on?',
-    a: 'We work on premium websites, product marketing experiences, and modern software interfaces for companies that need both beauty and clarity.',
+    q: 'What types of businesses do you build for?',
+    a: 'We specialize in custom web development and web apps for cafes & restaurants, gyms & fitness centers, nail art & beauty salons, medical clinics & doctors, luxury hotels, local services, personal brands, and tech startups.',
   },
   {
-    q: 'How quickly can we begin?',
-    a: 'Most projects start with a short discovery call and a focused proposal. From there, we can move into design and build within a matter of days.',
+    q: 'How fast can our website be launched?',
+    a: 'Our typical development sprint takes 2 to 4 weeks from project brief to live domain launch.',
   },
   {
-    q: 'Do you support long-term partnerships?',
-    a: 'Yes. We often stay on after launch for iteration, evolution, and ongoing design support as the product grows.',
+    q: 'Do I own 100% of the code and design files?',
+    a: 'Yes. Upon completion, we perform a full transfer of the GitHub repository, hosting accounts, and Figma design tokens.',
   },
   {
-    q: 'What is the collaboration process like?',
-    a: 'We keep things structured but thoughtful, with clear milestones, timely feedback loops, and a calm process that helps decisions move forward.',
+    q: 'Can you integrate online appointment booking & payment deposits?',
+    a: 'Yes! We build automated booking systems with UPI, Stripe, and credit card deposit support to eliminate no-shows for salons, clinics, and gyms.',
+  },
+  {
+    q: 'What happens after launch?',
+    a: 'Every project includes 30 days of post-launch support, performance audits, and security updates.',
   },
 ]
 
@@ -27,44 +31,54 @@ export default function FAQ() {
   const [open, setOpen] = useState(0)
 
   return (
-    <Section id="faq" eyebrow="FAQ" className="bg-surface/40">
+    <Section
+      id="faq"
+      label="FAQ"
+      title="Questions & Answers"
+      description="Everything you need to know about timeline, pricing, ownership, and post-launch support."
+    >
       <Container>
-        <div className="mb-14 max-w-2xl">
-          <h2 className="font-heading text-4xl leading-tight text-primaryText md:text-6xl">
-            Questions, <span className="italic text-accent">answered plainly.</span>
-          </h2>
-        </div>
-
-        <div className="divide-y divide-white/10 border-t border-white/10">
-          {FAQS.map((item, i) => {
-            const isOpen = open === i
-            return (
-              <div key={item.q} className="py-6">
-                <button
-                  onClick={() => setOpen(isOpen ? -1 : i)}
-                  data-cursor-hover
-                  className="flex w-full items-center justify-between gap-6 text-left"
-                >
-                  <span className="font-heading text-xl text-primaryText md:text-2xl">{item.q}</span>
-                  <motion.span
-                    animate={{ rotate: isOpen ? 45 : 0 }}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-accent"
+        <div className="mx-auto max-w-3xl">
+          <div className="divide-y divide-[#E5E7EB] rounded-2xl border border-[#E5E7EB] bg-white p-4 sm:p-6 shadow-sm">
+            {FAQS.map((item, i) => {
+              const isOpen = open === i
+              return (
+                <div key={item.q} className="py-4 first:pt-1 last:pb-1">
+                  <button
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                    className="flex w-full items-center justify-between gap-4 text-left transition-colors hover:text-[#5F8D3B]"
                   >
-                    <Plus size={16} />
-                  </motion.span>
-                </button>
+                    <span className="text-base font-bold text-[#0F0F0F] sm:text-lg">
+                      {item.q}
+                    </span>
+                    <span
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border transition-all ${
+                        isOpen ? 'bg-[#5F8D3B] text-white border-[#5F8D3B]' : 'bg-[#FAFAFA] text-[#0F0F0F] border-[#E5E7EB]'
+                      }`}
+                    >
+                      {isOpen ? <Minus size={14} /> : <Plus size={14} />}
+                    </span>
+                  </button>
 
-                <motion.div
-                  initial={false}
-                  animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-                  transition={{ duration: 0.3, ease: 'easeInOut' }}
-                  className="overflow-hidden"
-                >
-                  <p className="mt-4 max-w-2xl text-base leading-7 text-secondaryText">{item.a}</p>
-                </motion.div>
-              </div>
-            )
-          })}
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="mt-3 text-xs leading-relaxed text-[#555555] sm:text-sm">
+                          {item.a}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </Container>
     </Section>

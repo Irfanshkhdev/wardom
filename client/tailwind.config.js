@@ -5,27 +5,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#080808',
-        background: '#080808',
-        surface: '#101010',
-        surfaceElevated: '#181818',
-        primaryText: '#FFFFFF',
-        secondaryText: '#B4B4B4',
-        border: 'rgba(255,255,255,0.08)',
-        accent: '#E7B96A',
+        // WARDOM Studio Signature Brand Palette
+        primary: '#5F8D3B',
+        accent: '#7BAE47',
+        dark: '#111111',
+        muted: '#666666',
+        subtleText: '#8E8E93',
+        borderLight: '#EAEAEA',
+        bgLight: '#F9FAFB',
+        cardWhite: '#FFFFFF',
+
+        // Backward compatibility fallbacks for existing components/admin
+        ink: '#111111',
+        background: '#FFFFFF',
+        surface: '#FFFFFF',
+        surfaceElevated: '#F9FAFB',
+        primaryText: '#111111',
+        secondaryText: '#666666',
+        border: '#EAEAEA',
         cream: '#FFFFFF',
-        clay: '#E7B96A',
-        gold: '#E7B96A',
+        clay: '#5F8D3B',
+        gold: '#7BAE47',
       },
       borderRadius: {
         sm: '12px',
-        md: '18px',
-        lg: '28px',
+        md: '16px',
+        lg: '24px',
+        xl: '32px',
         pill: '9999px',
       },
       spacing: {
         8: '8px',
-        12: '12px',
         16: '16px',
         24: '24px',
         32: '32px',
@@ -35,9 +45,10 @@ export default {
         128: '128px',
       },
       boxShadow: {
-        soft: '0 1px 0 rgba(255,255,255,0.03), 0 8px 24px rgba(0,0,0,0.18)',
-        elevated: '0 1px 0 rgba(255,255,255,0.04), 0 14px 36px rgba(0,0,0,0.22)',
-        subtle: '0 0 0 1px rgba(255,255,255,0.04)',
+        subtle: '0 1px 2px rgba(0, 0, 0, 0.04)',
+        card: '0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02)',
+        cardHover: '0 16px 40px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03)',
+        greenGlow: '0 8px 24px -4px rgba(95, 141, 59, 0.3)',
       },
       transitionDuration: {
         250: '250ms',
@@ -45,12 +56,12 @@ export default {
         500: '500ms',
       },
       transitionTimingFunction: {
-        editorial: 'cubic-bezier(.22,1,.36,1)',
+        editorial: 'cubic-bezier(0.16, 1, 0.3, 1)',
       },
       fontFamily: {
-        heading: ['"Cormorant Garamond"', 'serif'],
-        body: ['"General Sans"', 'sans-serif'],
-        mono: ['"Space Grotesk"', 'sans-serif'],
+        heading: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', 'sans-serif'],
+        body: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', '"Space Grotesk"', 'monospace'],
       },
       cursor: {
         none: 'none',
@@ -59,3 +70,4 @@ export default {
   },
   plugins: [],
 }
+
