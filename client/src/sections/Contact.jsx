@@ -53,19 +53,19 @@ export default function Contact() {
   }
 
   return (
-    <Section id="contact" className="bg-white border-t border-[#E5E7EB] py-24 lg:py-36">
+    <Section id="contact" className="bg-white dark:bg-[#090A0F] border-t border-[#E5E7EB] dark:border-[#27272A] py-24 lg:py-36 transition-colors duration-200">
       <Container>
         {/* Header */}
-        <div className="mb-14 border-b border-[#E5E7EB] pb-10">
-          <h2 className="text-4xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-5xl lg:text-6xl leading-[1.05]">
+        <div className="mb-14 border-b border-[#E5E7EB] dark:border-[#27272A] pb-10">
+          <h2 className="text-4xl font-extrabold tracking-tight text-[#0F0F0F] dark:text-white sm:text-5xl lg:text-6xl leading-[1.05]">
             Turn ideas into <span className="italic font-serif font-normal text-[#5F8D3B]">reality!</span>
           </h2>
-          <p className="mt-4 text-sm leading-relaxed text-[#555555] sm:text-base max-w-2xl">
+          <p className="mt-4 text-sm leading-relaxed text-[#555555] dark:text-gray-300 sm:text-base max-w-2xl">
             Let us help you become even greater at what you do. Fill out the following form and we will get back to you in the next 24 hours.
           </p>
 
           {/* Marquee Ticker */}
-          <div className="mt-8 overflow-hidden rounded-full border border-[#E5E7EB] bg-[#FAFAFA] py-2.5 px-4 text-xs font-mono font-bold uppercase tracking-widest text-[#5F8D3B]">
+          <div className="mt-8 overflow-hidden rounded-full border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#12131A] py-2.5 px-4 text-xs font-mono font-bold uppercase tracking-widest text-[#5F8D3B]">
             <div className="flex gap-8 animate-marquee whitespace-nowrap">
               <span>Get in touch • Get in touch • Get in touch • Get in touch • Get in touch • Get in touch</span>
             </div>
@@ -78,15 +78,15 @@ export default function Contact() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="minimal-card p-6 sm:p-10 shadow-sm bg-white border border-[#E5E7EB]"
+            className="minimal-card p-6 sm:p-10 shadow-sm bg-white dark:bg-[#12131A] border border-[#E5E7EB] dark:border-[#27272A]"
           >
             {status === 'success' ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#5F8D3B] text-white">
                   <Check size={28} />
                 </span>
-                <h3 className="text-2xl font-extrabold text-[#0F0F0F]">Message Received</h3>
-                <p className="mt-2 max-w-sm text-xs leading-relaxed text-[#555555]">
+                <h3 className="text-2xl font-extrabold text-[#0F0F0F] dark:text-white">Message Received</h3>
+                <p className="mt-2 max-w-sm text-xs leading-relaxed text-[#555555] dark:text-gray-300">
                   Thank you! We will review your project brief and get back to you within 24 hours.
                 </p>
                 <button
@@ -110,7 +110,7 @@ export default function Contact() {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="Type your full name..."
-                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                    className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                   />
                 </div>
 
@@ -126,7 +126,7 @@ export default function Contact() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="name@company.com"
-                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                    className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                   />
                 </div>
 
@@ -142,7 +142,7 @@ export default function Contact() {
                     value={form.phone}
                     onChange={handleChange}
                     placeholder="+91 72629 50982"
-                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                    className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                   />
                 </div>
 
@@ -158,7 +158,7 @@ export default function Contact() {
                     value={form.company}
                     onChange={handleChange}
                     placeholder="Company or Brand Name..."
-                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                    className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                   />
                 </div>
 
@@ -176,7 +176,7 @@ export default function Contact() {
                         className={`rounded-full px-4 py-2 text-xs font-semibold transition-all ${
                           form.service === srv
                             ? 'bg-[#5F8D3B] text-white'
-                            : 'bg-[#FAFAFA] text-[#555555] border border-[#E5E7EB] hover:border-[#D1D5DB]'
+                            : 'bg-[#FAFAFA] dark:bg-[#181924] text-[#555555] dark:text-gray-300 border border-[#E5E7EB] dark:border-[#27272A] hover:border-[#D1D5DB]'
                         }`}
                       >
                         {srv}
@@ -197,7 +197,7 @@ export default function Contact() {
                     value={form.budget}
                     onChange={handleChange}
                     placeholder="Type your budget (e.g. ₹1.5L or $2,000)..."
-                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                    className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                   />
                 </div>
 
@@ -213,7 +213,7 @@ export default function Contact() {
                     value={form.message}
                     onChange={handleChange}
                     placeholder="Describe your project goals, key requirements, target timeline..."
-                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                    className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                   />
                 </div>
 
@@ -240,28 +240,28 @@ export default function Contact() {
 
           {/* Right Column: Contact Details */}
           <div className="space-y-6">
-            <div className="minimal-card p-6 bg-white border border-[#E5E7EB] space-y-6">
-              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] border-b border-[#E5E7EB] pb-3">
+            <div className="minimal-card p-6 bg-white dark:bg-[#12131A] border border-[#E5E7EB] dark:border-[#27272A] space-y-6">
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] dark:text-white border-b border-[#E5E7EB] dark:border-[#27272A] pb-3">
                 CONTACT INFORMATION
               </h3>
 
               <div className="space-y-4 text-xs">
                 <div>
-                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">Call Us</span>
-                  <a href="tel:+917262950982" className="block text-sm font-extrabold text-[#0F0F0F] hover:text-[#5F8D3B] mt-0.5 flex items-center gap-1.5">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999] dark:text-gray-400">Call Us</span>
+                  <a href="tel:+917262950982" className="block text-sm font-extrabold text-[#0F0F0F] dark:text-white hover:text-[#5F8D3B] mt-0.5 flex items-center gap-1.5">
                     <Phone className="h-3.5 w-3.5 text-[#5F8D3B]" /> +91 72629 50982
                   </a>
                 </div>
 
                 <div>
-                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">Address</span>
-                  <p className="font-semibold text-[#0F0F0F] mt-0.5 flex items-center gap-1.5">
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999] dark:text-gray-400">Address</span>
+                  <p className="font-semibold text-[#0F0F0F] dark:text-white mt-0.5 flex items-center gap-1.5">
                     <MapPin className="h-3.5 w-3.5 text-[#5F8D3B]" /> Pune, Maharashtra, India
                   </p>
                 </div>
 
                 <div>
-                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">Email</span>
+                  <span className="font-mono text-[10px] uppercase font-bold text-[#999999] dark:text-gray-400">Email</span>
                   <a href="mailto:hello@wardom.store" className="block text-sm font-extrabold text-[#5F8D3B] hover:underline mt-0.5 flex items-center gap-1.5">
                     <Mail className="h-3.5 w-3.5 text-[#5F8D3B]" /> hello@wardom.store
                   </a>
@@ -270,11 +270,11 @@ export default function Contact() {
             </div>
 
             {/* Social Links */}
-            <div className="minimal-card p-6 bg-white border border-[#E5E7EB] space-y-3">
-              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] border-b border-[#E5E7EB] pb-3">
+            <div className="minimal-card p-6 bg-white dark:bg-[#12131A] border border-[#E5E7EB] dark:border-[#27272A] space-y-3">
+              <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] dark:text-white border-b border-[#E5E7EB] dark:border-[#27272A] pb-3">
                 Socials
               </h4>
-              <div className="flex flex-col gap-3 text-xs font-semibold text-[#555555]">
+              <div className="flex flex-col gap-3 text-xs font-semibold text-[#555555] dark:text-gray-300">
                 <a href="https://instagram.com/wardom.store" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
                   <span className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram / wardom.store</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />

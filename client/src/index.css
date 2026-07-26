@@ -2,71 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --primary: #5F8D3B;
-  --accent: #7BAE47;
-  --dark: #0F0F0F;
-  --muted: #555555;
-  --border: #E5E7EB;
-  --bg-subtle: #FAFAFA;
+@layer base {
+  :root {
+    --primary: #5F8D3B;
+    --accent: #7BAE47;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-white text-[#0F0F0F] antialiased selection:bg-[#5F8D3B] selection:text-white transition-colors duration-200;
+  }
+
+  .dark body {
+    @apply bg-[#090A0F] text-white;
+  }
 }
 
-* {
-  box-sizing: border-box;
+@layer components {
+  .minimal-card {
+    @apply rounded-2xl border border-[#E5E7EB] bg-white transition-all duration-200;
+  }
+
+  .dark .minimal-card {
+    @apply border-[#27272A] bg-[#12131A];
+  }
+
+  .minimal-card-hover {
+    @apply hover:border-[#5F8D3B] hover:shadow-md;
+  }
 }
 
-html {
-  scroll-behavior: auto; /* Lenis smooth scroll handling */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
 }
 
-body {
-  margin: 0;
-  background-color: #FFFFFF;
-  color: #0F0F0F;
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #0F0F0F;
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
-::selection {
-  background-color: #5F8D3B;
-  color: #FFFFFF;
-}
-
-/* Subtle clean scrollbar */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #FAFAFA;
+  background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #D1D5DB;
   border-radius: 9999px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #9CA3AF;
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3F3F46;
 }
 
-@layer utilities {
-  .minimal-card {
-    background-color: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 16px;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .minimal-card:hover {
-    border-color: #D1D5DB;
-    box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.04);
-    transform: translateY(-2px);
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: #5F8D3B;
 }

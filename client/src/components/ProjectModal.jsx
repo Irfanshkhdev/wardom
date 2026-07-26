@@ -8,7 +8,6 @@ export default function ProjectModal({ project, onClose }) {
   const images = project.images || [
     'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
     'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
   ]
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -30,20 +29,20 @@ export default function ProjectModal({ project, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="fixed inset-0 bg-[#090A0F]/90 backdrop-blur-md"
+          className="fixed inset-0 bg-[#090A0F]/80 backdrop-blur-md"
         />
 
-        {/* Dark Stage Modal Container */}
+        {/* Theme Adaptive Modal Container */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.3 }}
-          className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#27272A] bg-[#12131A] p-6 sm:p-8 text-white shadow-2xl"
+          className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#E5E7EB] dark:border-[#27272A] bg-white dark:bg-[#12131A] p-6 sm:p-8 text-[#0F0F0F] dark:text-white shadow-2xl transition-colors duration-200"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#27272A] pb-4 mb-6">
-            <h2 className="text-2xl font-serif font-semibold text-white tracking-tight sm:text-3xl">
+          <div className="flex items-center justify-between border-b border-[#E5E7EB] dark:border-[#27272A] pb-4 mb-6">
+            <h2 className="text-2xl font-serif font-semibold text-[#0F0F0F] dark:text-white tracking-tight sm:text-3xl">
               {project.title}
             </h2>
 
@@ -59,7 +58,7 @@ export default function ProjectModal({ project, onClose }) {
 
               <button
                 onClick={onClose}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#181924] text-gray-400 hover:text-white transition-colors"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FAFAFA] dark:bg-[#181924] border border-[#E5E7EB] dark:border-[#27272A] text-[#555555] dark:text-gray-400 hover:text-[#0F0F0F] dark:hover:text-white transition-colors"
                 aria-label="Close modal"
               >
                 <X size={18} />
@@ -68,7 +67,7 @@ export default function ProjectModal({ project, onClose }) {
           </div>
 
           {/* Center Image Slide Carousel */}
-          <div className="relative overflow-hidden rounded-xl border border-[#27272A] bg-[#0A0B10] group">
+          <div className="relative overflow-hidden rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#0A0B10] group">
             <div className="aspect-[16/9] w-full relative">
               <img
                 src={images[currentIndex]}
@@ -105,7 +104,7 @@ export default function ProjectModal({ project, onClose }) {
                     key={i}
                     onClick={() => setCurrentIndex(i)}
                     className={`h-1.5 rounded-full transition-all ${
-                      currentIndex === i ? 'w-5 bg-[#5F8D3B]' : 'w-1.5 bg-white/40'
+                      currentIndex === i ? 'w-5 bg-[#5F8D3B]' : 'w-1.5 bg-black/30 dark:bg-white/40'
                     }`}
                   />
                 ))}
@@ -121,7 +120,7 @@ export default function ProjectModal({ project, onClose }) {
                 <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#5F8D3B]">
                   ABOUT PROJECT
                 </span>
-                <p className="mt-2 text-xs leading-relaxed text-gray-300 sm:text-sm">
+                <p className="mt-2 text-xs leading-relaxed text-[#555555] dark:text-gray-300 sm:text-sm">
                   {project.fullDescription || project.description || 'A minimalist, quiet luxury portfolio & web platform engineered for high conversion and brand distinction.'}
                 </p>
               </div>
@@ -130,9 +129,9 @@ export default function ProjectModal({ project, onClose }) {
                 <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#5F8D3B] block mb-3">
                   CORE FEATURES
                 </span>
-                <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                <div className="grid grid-cols-2 gap-2 text-xs text-[#0F0F0F] dark:text-gray-300">
                   {(project.highlights || ['Quiet luxury visual design', 'Integrated video banner', 'Clean pricing & menu cards', 'Sanctuary experience highlights']).map((feat) => (
-                    <div key={feat} className="flex items-center gap-2 border-l border-[#27272A] pl-2.5 py-1">
+                    <div key={feat} className="flex items-center gap-2 border-l border-[#E5E7EB] dark:border-[#27272A] pl-2.5 py-1">
                       <span className="h-1 w-1 rounded-full bg-[#5F8D3B]" />
                       <span>{feat}</span>
                     </div>
@@ -142,16 +141,16 @@ export default function ProjectModal({ project, onClose }) {
             </div>
 
             {/* Right Meta Column */}
-            <div className="space-y-6 border-t border-[#27272A] pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-6">
+            <div className="space-y-6 border-t border-[#E5E7EB] dark:border-[#27272A] pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-6">
               <div>
-                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#999999] dark:text-gray-400 block mb-2">
                   TECH STACK
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {(project.stack || ['Next.js', 'Tailwind CSS', 'TypeScript']).map((tech) => (
                     <span
                       key={tech}
-                      className="rounded bg-[#1C1D2A] px-2.5 py-1 font-mono text-[10px] text-gray-300 border border-[#27272A]"
+                      className="rounded bg-[#FAFAFA] dark:bg-[#181924] px-2.5 py-1 font-mono text-[10px] text-[#0F0F0F] dark:text-gray-300 border border-[#E5E7EB] dark:border-[#27272A]"
                     >
                       {tech}
                     </span>
@@ -160,17 +159,17 @@ export default function ProjectModal({ project, onClose }) {
               </div>
 
               <div>
-                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#999999] dark:text-gray-400 block mb-2">
                   PROJECT INFO
                 </span>
                 <div className="space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Project Type</span>
-                    <span className="font-bold text-white uppercase">{project.tag || 'PORTFOLIO'}</span>
+                    <span className="text-[#555555] dark:text-gray-400">Project Type</span>
+                    <span className="font-bold text-[#0F0F0F] dark:text-white uppercase">{project.tag || 'PORTFOLIO'}</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400">Industry</span>
-                    <span className="font-bold text-white">{project.clientType || 'Product Design'}</span>
+                    <span className="text-[#555555] dark:text-gray-400">Industry</span>
+                    <span className="font-bold text-[#0F0F0F] dark:text-white">{project.clientType || 'Product Design'}</span>
                   </div>
                 </div>
               </div>

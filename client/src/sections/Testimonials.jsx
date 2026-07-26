@@ -37,45 +37,52 @@ const HELAPH_TESTIMONIALS = [
 ]
 
 export default function Testimonials() {
+  const loop = [...HELAPH_TESTIMONIALS, ...HELAPH_TESTIMONIALS]
+
   return (
-    <Section id="testimonials" className="bg-white">
+    <Section id="testimonials" className="bg-white dark:bg-[#090A0F] py-20 transition-colors duration-200">
       <Container>
-        {/* Eyebrow Header (Client feedback) */}
-        <div className="mb-12">
+        {/* Eyebrow Header */}
+        <div className="mb-10 text-center sm:text-left">
           <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#5F8D3B]">
             Client feedback
           </span>
-          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-4xl">
+          <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F0F0F] dark:text-white sm:text-4xl">
             What founders & business owners say.
           </h2>
         </div>
+      </Container>
 
-        {/* 6 Testimonial Cards Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {HELAPH_TESTIMONIALS.map((t, index) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
-              className="minimal-card flex flex-col justify-between p-6 sm:p-8 bg-white border border-[#E5E7EB]"
+      {/* Automatic Horizontal Scrolling Reviews Marquee */}
+      <div className="relative overflow-hidden pt-4 pb-8">
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-white dark:from-[#090A0F] to-transparent" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-white dark:from-[#090A0F] to-transparent" />
+
+        <motion.div
+          className="flex w-max gap-6"
+          animate={{ x: ['0%', '-50%'] }}
+          transition={{ duration: 35, repeat: Infinity, ease: 'linear' }}
+        >
+          {loop.map((t, index) => (
+            <div
+              key={`${t.name}-${index}`}
+              className="minimal-card flex flex-col justify-between p-6 sm:p-8 bg-white dark:bg-[#12131A] border border-[#E5E7EB] dark:border-[#27272A] w-[340px] sm:w-[400px] shrink-0 shadow-sm"
             >
               <div>
-                <Quote className="h-6 w-6 text-[#5F8D3B] opacity-60 mb-3" />
-                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
+                <Quote className="h-6 w-6 text-[#5F8D3B] opacity-70 mb-3" />
+                <p className="text-xs sm:text-sm leading-relaxed text-[#555555] dark:text-gray-300">
                   &ldquo;{t.quote}&rdquo;
                 </p>
               </div>
 
-              <div className="mt-6 border-t border-[#E5E7EB] pt-4">
-                <h4 className="text-xs font-extrabold text-[#0F0F0F]">{t.name}</h4>
-                <p className="text-[11px] text-[#999999] mt-0.5">{t.role}</p>
+              <div className="mt-6 border-t border-[#E5E7EB] dark:border-[#27272A] pt-4">
+                <h4 className="text-xs font-extrabold text-[#0F0F0F] dark:text-white">{t.name}</h4>
+                <p className="text-[11px] text-[#999999] dark:text-gray-400 mt-0.5">{t.role}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </div>
-      </Container>
+        </motion.div>
+      </div>
     </Section>
   )
 }
