@@ -66,9 +66,9 @@ export default function Navbar() {
 
         {/* Right Phone + Start your project CTA */}
         <div className="hidden items-center gap-4 md:flex">
-          <a href="tel:+916206103436" className="flex items-center gap-1.5 text-xs font-bold text-[#0F0F0F] hover:text-[#5F8D3B]">
+          <a href="tel:+917262950982" className="flex items-center gap-1.5 text-xs font-bold text-[#0F0F0F] hover:text-[#5F8D3B]">
             <Phone className="h-3.5 w-3.5 text-[#5F8D3B]" />
-            +91 6206103436
+            +91 72629 50982
           </a>
           <Button href="/#contact" variant="primary" className="!text-xs !px-5 !py-2.5 font-bold">
             Start your project <ArrowUpRight className="h-3.5 w-3.5" />
@@ -115,9 +115,9 @@ export default function Navbar() {
               ))}
             </div>
             <div className="mt-4 border-t border-[#E5E7EB] pt-4 flex flex-col gap-2">
-              <a href="tel:+916206103436" className="flex items-center justify-center gap-1.5 text-xs font-bold text-[#0F0F0F] py-2">
+              <a href="tel:+917262950982" className="flex items-center justify-center gap-1.5 text-xs font-bold text-[#0F0F0F] py-2">
                 <Phone className="h-3.5 w-3.5 text-[#5F8D3B]" />
-                +91 6206103436
+                +91 72629 50982
               </a>
               <Button href="/#contact" variant="primary" onClick={() => setOpen(false)} className="w-full justify-center">
                 Start your project <ArrowUpRight className="h-4 w-4" />

@@ -8,7 +8,6 @@ import Loader from './components/Loader'
 import Hero from './sections/Hero'
 import TechStack from './sections/TechStack'
 import Services from './sections/Services'
-import FeaturedWork from './sections/FeaturedWork'
 import Testimonials from './sections/Testimonials'
 import WhyUs from './sections/WhyUs'
 import Contact from './sections/Contact'
@@ -29,7 +28,7 @@ function PublicApp() {
       <Navbar />
 
       <main>
-        {/* 1. Hero (Digital Products that Scale + Recent Work + 4 Stats) */}
+        {/* 1. Hero (Digital Products that Scale + Auto-scrolling Recent Work + 4 Stats) */}
         <Hero />
 
         {/* Marquee Stack Ticker */}
@@ -38,16 +37,13 @@ function PublicApp() {
         {/* 2. Services (OUR EXPERTISE - 01 Landing Pages, 02 Full-Stack Apps, 03 Mobile Apps, 04 Portfolio Websites) */}
         <Services />
 
-        {/* 3. Featured Work */}
-        <FeaturedWork />
-
-        {/* 4. Testimonials (Client feedback - 6 Exact Helaph Quotes) */}
+        {/* 3. Testimonials (Client feedback - 6 Exact Helaph Quotes) */}
         <Testimonials />
 
-        {/* 5. Team Banner (Designers, engineers, problem solvers.) */}
+        {/* 4. Team Banner (Designers, engineers, problem solvers.) */}
         <WhyUs />
 
-        {/* 6. Contact Form (Turn ideas into reality! + 7 Form Fields + Sidebar) */}
+        {/* 5. Contact Form (Turn ideas into reality! + Typed Budget Input + Contact Sidebar) */}
         <Contact />
       </main>
 

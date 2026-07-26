@@ -1,144 +1,183 @@
-import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X, ExternalLink, CheckCircle2, TrendingUp, Sparkles, ShieldCheck } from 'lucide-react'
-import Badge from './Badge'
-import Button from './Button'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { X, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react'
 
 export default function ProjectModal({ project, onClose }) {
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose()
-    }
-    if (project) {
-      document.body.style.overflow = 'hidden'
-      window.addEventListener('keydown', handleKeyDown)
-    }
-    return () => {
-      document.body.style.overflow = 'auto'
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [project, onClose])
+  if (!project) return null
+
+  const images = project.images || [
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80',
+  ]
+
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  function prevSlide() {
+    setCurrentIndex((i) => (i === 0 ? images.length - 1 : i - 1))
+  }
+
+  function nextSlide() {
+    setCurrentIndex((i) => (i === images.length - 1 ? 0 : i + 1))
+  }
 
   return (
     <AnimatePresence>
-      {project && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-[#111111]/40 backdrop-blur-md"
-          />
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+        {/* Backdrop */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 bg-[#090A0F]/90 backdrop-blur-md"
+        />
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative z-10 max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-3xl border border-[#EAEAEA] bg-white p-6 shadow-cardHover sm:p-8 md:p-10"
-          >
-            <button
-              onClick={onClose}
-              className="absolute top-6 right-6 flex h-10 w-10 items-center justify-center rounded-full border border-[#EAEAEA] bg-[#F9FAFB] text-[#111111] transition-colors hover:bg-[#EAEAEA]"
-              aria-label="Close modal"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <div className="flex flex-wrap items-center gap-3">
-              <Badge variant="green" icon={Sparkles}>
-                {project.category}
-              </Badge>
-              <Badge variant="outline">
-                {project.clientType}
-              </Badge>
-            </div>
-
-            <h3 className="mt-4 text-3xl font-extrabold text-[#111111] sm:text-4xl md:text-5xl">
+        {/* Dark Stage Modal Container */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          transition={{ duration: 0.3 }}
+          className="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl border border-[#27272A] bg-[#12131A] p-6 sm:p-8 text-white shadow-2xl"
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-[#27272A] pb-4 mb-6">
+            <h2 className="text-2xl font-serif font-semibold text-white tracking-tight sm:text-3xl">
               {project.title}
-            </h3>
-            <p className="mt-3 text-lg leading-relaxed text-[#666666]">
-              {project.fullDescription || project.description}
-            </p>
+            </h2>
 
-            {/* Visual Header Banner */}
-            <div className={`mt-8 overflow-hidden rounded-2xl border border-[#EAEAEA] bg-gradient-to-br ${project.gradient || 'from-[#F9FAFB] to-[#F4F5F6]'} p-6 sm:p-10`}>
-              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#5F8D3B]">Key Impact Delivered</span>
-                  <div className="mt-2 text-4xl font-extrabold text-[#111111] sm:text-5xl">
-                    {project.metricValue}
-                  </div>
-                  <div className="mt-1 text-sm font-semibold text-[#666666]">
-                    {project.metricLabel}
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="rounded-lg bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#111111] shadow-subtle border border-[#EAEAEA]">
-                      {tag}
-                    </span>
+            <div className="flex items-center gap-3">
+              <a
+                href={project.liveUrl || '#'}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-md bg-[#5F8D3B] px-3.5 py-1.5 text-xs font-bold text-white hover:bg-[#4d7330] transition-colors"
+              >
+                VISIT LIVE <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+
+              <button
+                onClick={onClose}
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-[#181924] text-gray-400 hover:text-white transition-colors"
+                aria-label="Close modal"
+              >
+                <X size={18} />
+              </button>
+            </div>
+          </div>
+
+          {/* Center Image Slide Carousel */}
+          <div className="relative overflow-hidden rounded-xl border border-[#27272A] bg-[#0A0B10] group">
+            <div className="aspect-[16/9] w-full relative">
+              <img
+                src={images[currentIndex]}
+                alt={`${project.title} slide ${currentIndex + 1}`}
+                className="h-full w-full object-cover transition-opacity duration-300"
+              />
+            </div>
+
+            {/* Navigation Arrows */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md hover:bg-black/80 transition-all"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-black/60 text-white backdrop-blur-md hover:bg-black/80 transition-all"
+                  aria-label="Next image"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
+
+            {/* Dots */}
+            {images.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentIndex(i)}
+                    className={`h-1.5 rounded-full transition-all ${
+                      currentIndex === i ? 'w-5 bg-[#5F8D3B]' : 'w-1.5 bg-white/40'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Lower Grid Info */}
+          <div className="mt-8 grid gap-8 md:grid-cols-[1.4fr_0.6fr]">
+            {/* Left Narrative & Core Features */}
+            <div className="space-y-6">
+              <div>
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#5F8D3B]">
+                  ABOUT PROJECT
+                </span>
+                <p className="mt-2 text-xs leading-relaxed text-gray-300 sm:text-sm">
+                  {project.fullDescription || project.description || 'A minimalist, quiet luxury portfolio & web platform engineered for high conversion and brand distinction.'}
+                </p>
+              </div>
+
+              <div>
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#5F8D3B] block mb-3">
+                  CORE FEATURES
+                </span>
+                <div className="grid grid-cols-2 gap-2 text-xs text-gray-300">
+                  {(project.highlights || ['Quiet luxury visual design', 'Integrated video banner', 'Clean pricing & menu cards', 'Sanctuary experience highlights']).map((feat) => (
+                    <div key={feat} className="flex items-center gap-2 border-l border-[#27272A] pl-2.5 py-1">
+                      <span className="h-1 w-1 rounded-full bg-[#5F8D3B]" />
+                      <span>{feat}</span>
+                    </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Metrics Breakdown */}
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {project.stats?.map((stat, i) => (
-                <div key={i} className="rounded-2xl border border-[#EAEAEA] bg-[#F9FAFB] p-5">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-[#666666]">
-                    <TrendingUp className="h-4 w-4 text-[#5F8D3B]" />
-                    {stat.label}
-                  </div>
-                  <div className="mt-2 text-2xl font-extrabold text-[#111111]">
-                    {stat.value}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Deliverables & Technology */}
-            <div className="mt-8 grid gap-8 md:grid-cols-2">
+            {/* Right Meta Column */}
+            <div className="space-y-6 border-t border-[#27272A] pt-6 md:border-t-0 md:border-l md:pt-0 md:pl-6">
               <div>
-                <h4 className="text-base font-bold text-[#111111] flex items-center gap-2">
-                  <ShieldCheck className="h-5 w-5 text-[#5F8D3B]" />
-                  What We Designed & Built
-                </h4>
-                <ul className="mt-4 flex flex-col gap-3">
-                  {project.deliverables?.map((item, index) => (
-                    <li key={index} className="flex items-start gap-3 text-sm text-[#666666]">
-                      <CheckCircle2 className="h-5 w-5 shrink-0 text-[#5F8D3B] mt-0.5" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <h4 className="text-base font-bold text-[#111111]">Tech Stack & Architecture</h4>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.stack?.map((tech) => (
-                    <span key={tech} className="rounded-xl border border-[#EAEAEA] bg-[#F9FAFB] px-3.5 py-2 text-xs font-semibold text-[#111111]">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2">
+                  TECH STACK
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {(project.stack || ['Next.js', 'Tailwind CSS', 'TypeScript']).map((tech) => (
+                    <span
+                      key={tech}
+                      className="rounded bg-[#1C1D2A] px-2.5 py-1 font-mono text-[10px] text-gray-300 border border-[#27272A]"
+                    >
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
-            </div>
 
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#EAEAEA] pt-6">
-              <Button href="#contact" variant="primary" onClick={onClose}>
-                Request Similar Product
-              </Button>
-              <Button href="#contact" variant="secondary" onClick={onClose}>
-                Close Overview
-              </Button>
+              <div>
+                <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-gray-400 block mb-2">
+                  PROJECT INFO
+                </span>
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Project Type</span>
+                    <span className="font-bold text-white uppercase">{project.tag || 'PORTFOLIO'}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-400">Industry</span>
+                    <span className="font-bold text-white">{project.clientType || 'Product Design'}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </motion.div>
-        </div>
-      )}
+          </div>
+        </motion.div>
+      </div>
     </AnimatePresence>
   )
 }

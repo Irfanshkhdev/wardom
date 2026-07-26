@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Check, Loader2, Mail, MapPin, Phone, Send, Github, Instagram, Twitter, Linkedin } from 'lucide-react'
+import { ArrowUpRight, Check, Loader2, Mail, MapPin, Phone, Send, Instagram, Twitter, Linkedin } from 'lucide-react'
 import Section from '../components/Section'
 import Container from '../components/Container'
 import Button from '../components/Button'
@@ -13,20 +13,13 @@ const SERVICE_OPTIONS = [
   'Other',
 ]
 
-const BUDGET_OPTIONS = [
-  'Under ₹50k',
-  '₹50k – ₹1.5L',
-  '₹1.5L – ₹3.5L',
-  '₹3.5L+',
-]
-
 const initialForm = {
   name: '',
   email: '',
   phone: '',
   company: '',
   service: SERVICE_OPTIONS[0],
-  budget: BUDGET_OPTIONS[1],
+  budget: '',
   message: '',
 }
 
@@ -48,7 +41,7 @@ export default function Contact() {
         name: form.name,
         email: form.email,
         budget: form.budget,
-        message: `[Phone: ${form.phone}] [Company: ${form.company}] [Service: ${form.service}] ${form.message}`,
+        message: `[Phone: ${form.phone}] [Company: ${form.company}] [Service: ${form.service}] [Budget: ${form.budget}] ${form.message}`,
       }
       await submitContactForm(payload)
       setStatus('success')
@@ -62,7 +55,7 @@ export default function Contact() {
   return (
     <Section id="contact" className="bg-white border-t border-[#E5E7EB] py-24 lg:py-36">
       <Container>
-        {/* Header (Helaph exact text: Turn ideas into reality!) */}
+        {/* Header */}
         <div className="mb-14 border-b border-[#E5E7EB] pb-10">
           <h2 className="text-4xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-5xl lg:text-6xl leading-[1.05]">
             Turn ideas into <span className="italic font-serif font-normal text-[#5F8D3B]">reality!</span>
@@ -80,7 +73,7 @@ export default function Contact() {
         </div>
 
         <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-          {/* Left Column: Exact 7 Form Fields */}
+          {/* Left Column Form */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +87,7 @@ export default function Contact() {
                 </span>
                 <h3 className="text-2xl font-extrabold text-[#0F0F0F]">Message Received</h3>
                 <p className="mt-2 max-w-sm text-xs leading-relaxed text-[#555555]">
-                  Thank you! We will review your project requirements and get back to you within 24 hours.
+                  Thank you! We will review your project brief and get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => setStatus('idle')}
@@ -148,7 +141,7 @@ export default function Contact() {
                     required
                     value={form.phone}
                     onChange={handleChange}
-                    placeholder="+91 00000 00000"
+                    placeholder="+91 72629 50982"
                     className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
                   />
                 </div>
@@ -192,27 +185,20 @@ export default function Contact() {
                   </div>
                 </div>
 
-                {/* 06 What have you budgeted for this project? */}
+                {/* 06 What have you budgeted for this project? (Typed Input) */}
                 <div>
-                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-3">
+                  <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-2">
                     <span>06</span> What have you budgeted for this project?
                   </label>
-                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                    {BUDGET_OPTIONS.map((b) => (
-                      <button
-                        type="button"
-                        key={b}
-                        onClick={() => setForm((f) => ({ ...f, budget: b }))}
-                        className={`rounded-xl p-2.5 text-center text-xs font-semibold transition-all ${
-                          form.budget === b
-                            ? 'bg-[#0F0F0F] text-white'
-                            : 'bg-[#FAFAFA] text-[#555555] border border-[#E5E7EB] hover:border-[#D1D5DB]'
-                        }`}
-                      >
-                        {b}
-                      </button>
-                    ))}
-                  </div>
+                  <input
+                    type="text"
+                    name="budget"
+                    required
+                    value={form.budget}
+                    onChange={handleChange}
+                    placeholder="Type your budget (e.g. ₹1.5L or $2,000)..."
+                    className="w-full rounded-xl border border-[#E5E7EB] bg-[#FAFAFA] px-4 py-3 text-xs text-[#0F0F0F] placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white focus:outline-none transition-all"
+                  />
                 </div>
 
                 {/* 07 Tell us about your project */}
@@ -252,7 +238,7 @@ export default function Contact() {
             )}
           </motion.div>
 
-          {/* Right Column: Call Us, Address, Email, Socials */}
+          {/* Right Column: Contact Details */}
           <div className="space-y-6">
             <div className="minimal-card p-6 bg-white border border-[#E5E7EB] space-y-6">
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] border-b border-[#E5E7EB] pb-3">
@@ -262,22 +248,22 @@ export default function Contact() {
               <div className="space-y-4 text-xs">
                 <div>
                   <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">Call Us</span>
-                  <a href="tel:+916206103436" className="block text-sm font-extrabold text-[#0F0F0F] hover:text-[#5F8D3B] mt-0.5 flex items-center gap-1.5">
-                    <Phone className="h-3.5 w-3.5 text-[#5F8D3B]" /> +91 62061 03436
+                  <a href="tel:+917262950982" className="block text-sm font-extrabold text-[#0F0F0F] hover:text-[#5F8D3B] mt-0.5 flex items-center gap-1.5">
+                    <Phone className="h-3.5 w-3.5 text-[#5F8D3B]" /> +91 72629 50982
                   </a>
                 </div>
 
                 <div>
                   <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">Address</span>
                   <p className="font-semibold text-[#0F0F0F] mt-0.5 flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-[#5F8D3B]" /> Mumbai, Maharashtra, India
+                    <MapPin className="h-3.5 w-3.5 text-[#5F8D3B]" /> Pune, Maharashtra, India
                   </p>
                 </div>
 
                 <div>
                   <span className="font-mono text-[10px] uppercase font-bold text-[#999999]">Email</span>
-                  <a href="mailto:hello@wardom.studio" className="block text-sm font-extrabold text-[#5F8D3B] hover:underline mt-0.5 flex items-center gap-1.5">
-                    <Mail className="h-3.5 w-3.5 text-[#5F8D3B]" /> hello@wardom.studio
+                  <a href="mailto:hello@wardom.store" className="block text-sm font-extrabold text-[#5F8D3B] hover:underline mt-0.5 flex items-center gap-1.5">
+                    <Mail className="h-3.5 w-3.5 text-[#5F8D3B]" /> hello@wardom.store
                   </a>
                 </div>
               </div>
@@ -289,16 +275,16 @@ export default function Contact() {
                 Socials
               </h4>
               <div className="flex flex-col gap-3 text-xs font-semibold text-[#555555]">
-                <a href="https://x.com" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
-                  <span className="flex items-center gap-2"><Twitter className="h-4 w-4" /> Twitter / X</span>
+                <a href="https://instagram.com/wardom.store" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
+                  <span className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram / wardom.store</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
-                  <span className="flex items-center gap-2"><Instagram className="h-4 w-4" /> Instagram</span>
+                <a href="https://twitter.com/wardomxd" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
+                  <span className="flex items-center gap-2"><Twitter className="h-4 w-4" /> Twitter / wardomxd</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
-                  <span className="flex items-center gap-2"><Linkedin className="h-4 w-4" /> LinkedIn</span>
+                <a href="https://linkedin.com/in/irfanshkh" target="_blank" rel="noreferrer" className="flex items-center justify-between hover:text-[#5F8D3B]">
+                  <span className="flex items-center gap-2"><Linkedin className="h-4 w-4" /> LinkedIn / irfanshkh</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </div>
