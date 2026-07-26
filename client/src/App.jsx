@@ -1,16 +1,21 @@
 import { useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Loader from './components/Loader'
 
 import Hero from './sections/Hero'
+import TechStack from './sections/TechStack'
 import Services from './sections/Services'
 import FeaturedWork from './sections/FeaturedWork'
 import Testimonials from './sections/Testimonials'
 import WhyUs from './sections/WhyUs'
 import Contact from './sections/Contact'
+
+import ProjectsPage from './pages/ProjectsPage'
+import PricingPage from './pages/PricingPage'
+import AboutPage from './pages/AboutPage'
 
 import AdminApp from './admin/AdminApp'
 import NotFound from './pages/NotFound'
@@ -24,28 +29,46 @@ function PublicApp() {
       <Navbar />
 
       <main>
-        {/* 1. Hero (Digital Products that Scale + 4 Showcase Cards + 4-Column Stats Bar) */}
+        {/* 1. Hero (Digital Products that Scale + Recent Work + 4 Stats) */}
         <Hero />
 
-        {/* 2. Specialized Services (01 Landing Pages, 02 Full-Stack Apps, 03 Mobile Apps, 04 Business Websites) */}
+        {/* Marquee Stack Ticker */}
+        <TechStack />
+
+        {/* 2. Services (OUR EXPERTISE - 01 Landing Pages, 02 Full-Stack Apps, 03 Mobile Apps, 04 Portfolio Websites) */}
         <Services />
 
         {/* 3. Featured Work */}
         <FeaturedWork />
 
-        {/* 4. Testimonials (REVIEWS · TESTIMONIALS) */}
+        {/* 4. Testimonials (Client feedback - 6 Exact Helaph Quotes) */}
         <Testimonials />
 
-        {/* 5. Team / About Banner (Designers, engineers, problem solvers.) */}
+        {/* 5. Team Banner (Designers, engineers, problem solvers.) */}
         <WhyUs />
 
-        {/* 6. Start A Project Form (Turn ideas into reality! + Numbered Step Form) */}
+        {/* 6. Contact Form (Turn ideas into reality! + 7 Form Fields + Sidebar) */}
         <Contact />
       </main>
 
       <Footer />
     </div>
   )
+}
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation()
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0)
+    } else {
+      const el = document.querySelector(hash)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [pathname, hash])
+
+  return null
 }
 
 export default function App() {
@@ -65,10 +88,16 @@ export default function App() {
   }, [])
 
   return (
-    <Routes>
-      <Route path="/admin/*" element={<AdminApp />} />
-      <Route path="/" element={<PublicApp />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/admin/*" element={<AdminApp />} />
+        <Route path="/" element={<PublicApp />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   )
 }

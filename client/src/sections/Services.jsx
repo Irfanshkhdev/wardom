@@ -8,26 +8,26 @@ const SERVICES_ROWS = [
   {
     number: '01',
     title: 'Landing Pages',
-    summary: 'High-converting web design tailored for local businesses & startups.',
-    features: ['Rapid 2-Week Turnaround', 'SEO & Speed Optimization', 'Conversion-Focused Funnel', 'A/B Testing Ready'],
+    summary: 'High-converting landing pages that turn visitors into customers',
+    features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'A/B Testing'],
   },
   {
     number: '02',
     title: 'Full-Stack Applications',
-    summary: 'Custom web applications, booking portals, client dashboards, and custom CMS.',
-    features: ['Secure Auth & Payments', 'Scalable Cloud Infrastructure', 'Custom Executive Admin Panel', 'Real-Time Database'],
+    summary: 'End-to-end engineering of complex web ecosystems. We build scalable, secure, and high-performance applications from the ground up, tailored to your business logic.',
+    features: ['Modern Tech Stack', 'Scalable Architecture', 'API Integration', 'Cloud Deployment'],
   },
   {
     number: '03',
     title: 'Mobile Applications',
-    summary: 'Cross-platform iOS & Android apps for appointment booking, customer loyalty, and pre-orders.',
-    features: ['Native Performance', 'Push Notifications', 'Intuitive Touch UX', 'App Store Release'],
+    summary: 'Next-generation mobile experiences for iOS and Android. We leverage native and cross-platform technologies to deliver fluid, responsive, and feature-rich apps.',
+    features: ['Cross-Platform', 'Native Performance', 'App Store Ready', 'Push Notifications'],
   },
   {
     number: '04',
-    title: 'Portfolio & Business Websites',
-    summary: 'High-craft websites for Cafes, Salons, Gyms, Clinics, Hotels, and Personal Brands.',
-    features: ['Bespoke Visual Identity', 'Sub-Second Page Speeds', 'Custom Micro-Animations', '100% Code Ownership'],
+    title: 'Portfolio Websites',
+    summary: 'Premium digital identity experiences. We craft high-impact, narrative-driven portfolios that showcase your expertise with cinematic quality and technical precision.',
+    features: ['Professional Design', 'Portfolio Gallery', 'Contact Forms', 'SEO Ready'],
   },
 ]
 
@@ -35,11 +35,11 @@ export default function Services() {
   return (
     <Section id="services" className="bg-[#FAFAFA] border-y border-[#E5E7EB]">
       <Container>
-        {/* Top Header Split (Helaph structure) */}
+        {/* Top Header Split (Helaph exact text) */}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between border-b border-[#E5E7EB] pb-12">
           <div className="max-w-xl">
             <span className="font-mono text-[11px] font-bold uppercase tracking-widest text-[#5F8D3B]">
-              OUR SERVICES
+              OUR EXPERTISE
             </span>
             <h2 className="mt-2 text-3xl font-extrabold tracking-tight text-[#0F0F0F] sm:text-4xl lg:text-5xl leading-[1.1]">
               Specialized services for digital growth.
@@ -47,11 +47,11 @@ export default function Services() {
           </div>
 
           <p className="max-w-md text-sm leading-relaxed text-[#555555]">
-            We build modern digital products that turn visitors into customers... combining research, top-tier engineering, and human-centric design.
+            End-to-end digital solutions crafted with modern technology and a deep focus on performance, design, and reliable results.
           </p>
         </div>
 
-        {/* 4 Numbered Service Rows divided by hairline lines (Helaph structure) */}
+        {/* 4 Numbered Service Rows */}
         <div className="mt-10 divide-y divide-[#E5E7EB]">
           {SERVICES_ROWS.map((service, index) => (
             <motion.div
@@ -91,13 +91,13 @@ export default function Services() {
           ))}
         </div>
 
-        {/* Bottom Action CTAs (Helaph structure: DISCOVER ALL SERVICES ↗ + GET A CUSTOM QUOTE ↗) */}
+        {/* Bottom Action CTAs (Discuss your needs & View pricing) */}
         <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[#E5E7EB] pt-8">
-          <a href="#work" className="text-xs font-bold uppercase tracking-wider text-[#0F0F0F] hover:text-[#5F8D3B] flex items-center gap-1">
-            DISCOVER ALL SERVICES <ArrowUpRight className="h-4 w-4" />
+          <a href="#contact" className="text-xs font-bold uppercase tracking-wider text-[#0F0F0F] hover:text-[#5F8D3B] flex items-center gap-1">
+            Discuss your needs <ArrowUpRight className="h-4 w-4" />
           </a>
-          <Button href="#contact" variant="primary" className="!text-xs !px-6 !py-3 font-bold uppercase tracking-wider">
-            GET A CUSTOM QUOTE <ArrowUpRight className="h-4 w-4" />
+          <Button href="/pricing" variant="primary" className="!text-xs !px-6 !py-3 font-bold uppercase tracking-wider">
+            View pricing <ArrowUpRight className="h-4 w-4" />
           </Button>
         </div>
       </Container>
