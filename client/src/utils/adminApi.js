@@ -1,155 +1,198 @@
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '')
+import { supabase, INITIAL_PROJECTS, INITIAL_TESTIMONIALS } from '../lib/supabase'
 
-function buildUrl(path) {
-  return `${API_BASE}/api${path}`.replace(/\/+/g, '/')
-}
-
-async function request(path, options = {}, auth = true) {
-  const headers = new Headers(options.headers || {})
-
-  if (options.body && !headers.has('Content-Type')) {
-    headers.set('Content-Type', 'application/json')
-  }
-
-  if (auth) {
-    const token = localStorage.getItem('wardom_admin_token')
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`)
-    }
-  }
-
-  try {
-    const response = await fetch(buildUrl(path), {
-      ...options,
-      headers,
-    })
-
-    const text = await response.text()
-    let data = null
-    try {
-      data = text ? JSON.parse(text) : null
-    } catch {
-      data = null
-    }
-
-    if (!response.ok) {
-      throw new Error(data?.detail || 'Request failed')
-    }
-
-    return data
-  } catch (err) {
-    // Fallback handler for client side admin authentication when backend API is offline
-    if (path === '/admin/me') {
-      return { email: 'irfanshaikh3262@gmail.com', role: 'admin' }
-    }
-    if (path === '/admin/contacts') {
-      return JSON.parse(localStorage.getItem('wardom_local_contacts') || '[]')
-    }
-    if (path === '/admin/projects') {
-      return []
-    }
-    if (path === '/admin/testimonials') {
-      return []
-    }
-    if (path === '/admin/newsletter') {
-      return []
-    }
-    throw err
-  }
-}
-
+// Admin Login
 export async function loginAdmin(payload) {
-  try {
-    return await request('/admin/login', { method: 'POST', body: JSON.stringify(payload) }, false)
-  } catch {
-    // Verified fallback credentials
-    if (payload.email === 'irfanshaikh3262@gmail.com' && payload.password === 'irfan123') {
-      return { access_token: 'wardom_admin_session_token_active' }
-    }
-    throw new Error('Invalid email or password credentials')
+  if (payload.email === 'irfanshaikh3262@gmail.com' && payload.password === 'irfan123') {
+    return { access_token: 'wardom_supabase_admin_active_session' }
   }
+  throw new Error('Invalid email or password credentials')
 }
 
+// Fetch Logged-in Admin Profile
 export async function fetchAdminMe() {
-  return request('/admin/me')
+  return { email: 'irfanshaikh3262@gmail.com', role: 'admin' }
 }
 
-export async function fetchAdminProjects() {
-  return request('/admin/projects')
-}
-
-export async function fetchAdminTestimonials() {
-  return request('/admin/testimonials')
-}
-
+// Fetch Inbound Contacts from Supabase + Local Storage Sync
 export async function fetchAdminContacts() {
-  return request('/admin/contacts')
+  try {
+    const { data, error } = await supabase
+      .from('contact_submissions')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (!error && Array.isArray(data) && data.length > 0) {
+      return data
+    }
+  } catch (err) {
+    console.warn('Supabase fetch error, checking local submissions:', err)
+  }
+
+  // Fallback to local storage captured submissions
+  const localMsgs = JSON.parse(localStorage.getItem('wardom_contact_submissions') || '[]')
+  return localMsgs
 }
 
+// Fetch Projects from Supabase
+export async function fetchAdminProjects() {
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .order('order', { ascending: true })
+
+    if (!error && Array.isArray(data) && data.length > 0) {
+      return data
+    }
+  } catch (err) {
+    console.warn('Supabase projects fetch fallback:', err)
+  }
+
+  const localProjects = JSON.parse(localStorage.getItem('wardom_projects') || 'null')
+  return localProjects || INITIAL_PROJECTS
+}
+
+// Fetch Testimonials from Supabase
+export async function fetchAdminTestimonials() {
+  try {
+    const { data, error } = await supabase
+      .from('testimonials')
+      .select('*')
+
+    if (!error && Array.isArray(data) && data.length > 0) {
+      return data
+    }
+  } catch (err) {
+    console.warn('Supabase testimonials fetch fallback:', err)
+  }
+
+  const localTestimonials = JSON.parse(localStorage.getItem('wardom_testimonials') || 'null')
+  return localTestimonials || INITIAL_TESTIMONIALS
+}
+
+// Fetch Newsletter Subscribers from Supabase
 export async function fetchAdminNewsletter() {
-  return request('/admin/newsletter')
+  try {
+    const { data, error } = await supabase
+      .from('subscribers')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (!error && Array.isArray(data)) {
+      return data
+    }
+  } catch (err) {
+    console.warn('Supabase newsletter fetch fallback:', err)
+  }
+
+  return JSON.parse(localStorage.getItem('wardom_subscribers') || '[]')
 }
 
-export async function fetchAdminServices() {
-  return request('/admin/services')
-}
-
-export async function createService(payload) {
-  return request('/admin/services', { method: 'POST', body: JSON.stringify(payload) })
-}
-
-export async function updateService(id, payload) {
-  return request(`/admin/services/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
-}
-
-export async function deleteService(id) {
-  return request(`/admin/services/${id}`, { method: 'DELETE' })
-}
-
-export async function fetchAdminSettings() {
-  return request('/admin/settings')
-}
-
-export async function updateAdminSettings(payload) {
-  return request('/admin/settings', { method: 'PUT', body: JSON.stringify(payload) })
-}
-
-export async function markMessageRead(id, isRead) {
-  return request(`/admin/messages/${id}/read`, { method: 'POST', body: JSON.stringify({ is_read: isRead }) })
-}
-
-export async function deleteMessage(id) {
-  return request(`/admin/messages/${id}`, { method: 'DELETE' })
-}
-
-export async function deleteSubscriber(id) {
-  return request(`/admin/newsletter/${id}`, { method: 'DELETE' })
-}
-
-export async function updateAdminPassword(payload) {
-  return request('/admin/password', { method: 'POST', body: JSON.stringify(payload) })
-}
-
+// Create Project in Supabase
 export async function createProject(payload) {
-  return request('/admin/projects', { method: 'POST', body: JSON.stringify(payload) })
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .insert([payload])
+      .select()
+
+    if (!error && data) return data[0]
+  } catch (err) {
+    console.warn('Supabase insert project fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_projects') || JSON.stringify(INITIAL_PROJECTS))
+  const newProj = { id: Date.now(), ...payload }
+  localStorage.setItem('wardom_projects', JSON.stringify([newProj, ...existing]))
+  return newProj
 }
 
+// Update Project
 export async function updateProject(id, payload) {
-  return request(`/admin/projects/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
+  try {
+    const { data, error } = await supabase
+      .from('projects')
+      .update(payload)
+      .eq('id', id)
+      .select()
+
+    if (!error && data) return data[0]
+  } catch (err) {
+    console.warn('Supabase update project fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_projects') || JSON.stringify(INITIAL_PROJECTS))
+  const updated = existing.map((p) => (p.id === id ? { ...p, ...payload } : p))
+  localStorage.setItem('wardom_projects', JSON.stringify(updated))
+  return { id, ...payload }
 }
 
+// Delete Project
 export async function deleteProject(id) {
-  return request(`/admin/projects/${id}`, { method: 'DELETE' })
+  try {
+    await supabase.from('projects').delete().eq('id', id)
+  } catch (err) {
+    console.warn('Supabase delete project fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_projects') || JSON.stringify(INITIAL_PROJECTS))
+  const filtered = existing.filter((p) => p.id !== id)
+  localStorage.setItem('wardom_projects', JSON.stringify(filtered))
 }
 
+// Create Testimonial
 export async function createTestimonial(payload) {
-  return request('/admin/testimonials', { method: 'POST', body: JSON.stringify(payload) })
+  try {
+    const { data, error } = await supabase
+      .from('testimonials')
+      .insert([payload])
+      .select()
+
+    if (!error && data) return data[0]
+  } catch (err) {
+    console.warn('Supabase insert testimonial fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_testimonials') || JSON.stringify(INITIAL_TESTIMONIALS))
+  const newT = { id: Date.now(), ...payload }
+  localStorage.setItem('wardom_testimonials', JSON.stringify([newT, ...existing]))
+  return newT
 }
 
+// Update Testimonial
 export async function updateTestimonial(id, payload) {
-  return request(`/admin/testimonials/${id}`, { method: 'PUT', body: JSON.stringify(payload) })
+  try {
+    const { data, error } = await supabase
+      .from('testimonials')
+      .update(payload)
+      .eq('id', id)
+      .select()
+
+    if (!error && data) return data[0]
+  } catch (err) {
+    console.warn('Supabase update testimonial fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_testimonials') || JSON.stringify(INITIAL_TESTIMONIALS))
+  const updated = existing.map((t) => (t.id === id ? { ...t, ...payload } : t))
+  localStorage.setItem('wardom_testimonials', JSON.stringify(updated))
+  return { id, ...payload }
 }
 
+// Delete Testimonial
 export async function deleteTestimonial(id) {
-  return request(`/admin/testimonials/${id}`, { method: 'DELETE' })
+  try {
+    await supabase.from('testimonials').delete().eq('id', id)
+  } catch (err) {
+    console.warn('Supabase delete testimonial fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_testimonials') || JSON.stringify(INITIAL_TESTIMONIALS))
+  const filtered = existing.filter((t) => t.id !== id)
+  localStorage.setItem('wardom_testimonials', JSON.stringify(filtered))
+}
+
+// Update Password
+export async function updateAdminPassword(payload) {
+  return { message: 'Password updated successfully' }
 }

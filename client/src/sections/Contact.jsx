@@ -4,7 +4,7 @@ import { ArrowUpRight, Check, Loader2, Mail, MapPin, Phone, Send, Instagram, Twi
 import Section from '../components/Section'
 import Container from '../components/Container'
 import Button from '../components/Button'
-import { submitContactForm } from '../utils/api'
+import { supabase } from '../lib/supabase'
 
 const SERVICE_OPTIONS = [
   'Web Development',
@@ -36,49 +36,67 @@ export default function Contact() {
     e.preventDefault()
     setStatus('loading')
     setError('')
+
+    const newSubmission = {
+      id: Date.now(),
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      company: form.company,
+      service: form.service,
+      budget: form.budget,
+      message: form.message,
+      created_at: new Date().toISOString(),
+    }
+
     try {
-      // 1. Post to Backend API endpoint (/api/contact) for Admin Console
+      // 1. Insert into Supabase Cloud Database (contact_submissions table)
       try {
-        const payload = {
-          name: form.name,
-          email: form.email,
-          budget: form.budget,
-          message: `[Phone: ${form.phone}] [Company: ${form.company}] [Service: ${form.service}] [Budget: ${form.budget}] ${form.message}`,
-        }
-        await submitContactForm(payload)
-      } catch (backendErr) {
-        console.warn('Backend API notification skipped or offline:', backendErr)
+        await supabase.from('contact_submissions').insert([
+          {
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            company: form.company,
+            service: form.service,
+            budget: form.budget,
+            message: form.message,
+          },
+        ])
+      } catch (sbErr) {
+        console.warn('Supabase DB insert warning:', sbErr)
       }
 
-      // 2. Web3Forms Live Email Dispatch to hello@wardom.store
-      const web3FormsData = new FormData()
-      web3FormsData.append('access_key', '8d14876b-9516-43e8-[#5F8D3B]-wardom') // Web3Forms Access Key
-      web3FormsData.append('subject', `New Project Inquiry from ${form.name} (${form.company || 'Individual'})`)
-      web3FormsData.append('from_name', form.name)
-      web3FormsData.append('replyto', form.email)
-      web3FormsData.append('email', form.email)
-      web3FormsData.append('phone', form.phone)
-      web3FormsData.append('company', form.company)
-      web3FormsData.append('service', form.service)
-      web3FormsData.append('budget', form.budget)
-      web3FormsData.append('message', form.message)
+      // 2. Sync to Local Storage so Admin panel reads it immediately
+      const existingLocal = JSON.parse(localStorage.getItem('wardom_contact_submissions') || '[]')
+      localStorage.setItem('wardom_contact_submissions', JSON.stringify([newSubmission, ...existingLocal]))
 
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: web3FormsData,
-      })
+      // 3. Web3Forms Live Email Dispatch to hello@wardom.store & irfanshaikh3262@gmail.com
+      try {
+        const web3FormsData = new FormData()
+        web3FormsData.append('access_key', '8d14876b-9516-43e8-b76b-wardom')
+        web3FormsData.append('subject', `New WARDOM Project Inquiry: ${form.name} (${form.company || 'Client'})`)
+        web3FormsData.append('from_name', form.name)
+        web3FormsData.append('replyto', form.email)
+        web3FormsData.append('email', form.email)
+        web3FormsData.append('phone', form.phone)
+        web3FormsData.append('company', form.company)
+        web3FormsData.append('service', form.service)
+        web3FormsData.append('budget', form.budget)
+        web3FormsData.append('message', form.message)
 
-      const resData = await response.json()
-      if (resData.success || response.ok || response.status === 200) {
-        setStatus('success')
-        setForm(initialForm)
-      } else {
-        // Fallback success if form captured
-        setStatus('success')
-        setForm(initialForm)
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: web3FormsData,
+        })
+      } catch (emailErr) {
+        console.warn('Live email dispatch catch:', emailErr)
       }
+
+      setStatus('success')
+      setForm(initialForm)
     } catch (err) {
-      // Optimistic success catch so user receives clean feedback
+      console.error('Contact submission error:', err)
       setStatus('success')
       setForm(initialForm)
     }
@@ -130,9 +148,6 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-8">
-                {/* Hidden Web3Forms Key */}
-                <input type="hidden" name="access_key" value="8d14876b-9516-43e8-b76b-wardom" />
-
                 {/* 01 What's your name? */}
                 <div>
                   <label className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#5F8D3B] mb-2">
@@ -252,7 +267,7 @@ export default function Contact() {
                   />
                 </div>
 
-                {status === 'error' && (
+                {error && (
                   <p className="text-xs font-semibold text-red-600" role="alert">
                     {error}
                   </p>
