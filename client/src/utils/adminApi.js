@@ -28,9 +28,40 @@ export async function fetchAdminContacts() {
     console.warn('Supabase fetch error, checking local submissions:', err)
   }
 
-  // Fallback to local storage captured submissions
   const localMsgs = JSON.parse(localStorage.getItem('wardom_contact_submissions') || '[]')
   return localMsgs
+}
+
+// Fetch Giveaway Entries from Supabase + Local Storage Sync
+export async function fetchAdminGiveawayEntries() {
+  try {
+    const { data, error } = await supabase
+      .from('giveaway_entries')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (!error && Array.isArray(data) && data.length > 0) {
+      return data
+    }
+  } catch (err) {
+    console.warn('Supabase giveaway fetch error:', err)
+  }
+
+  const localEntries = JSON.parse(localStorage.getItem('wardom_giveaway_entries') || '[]')
+  return localEntries
+}
+
+// Delete Giveaway Entry
+export async function deleteGiveawayEntry(id) {
+  try {
+    await supabase.from('giveaway_entries').delete().eq('id', id)
+  } catch (err) {
+    console.warn('Supabase delete giveaway entry fallback:', err)
+  }
+
+  const existing = JSON.parse(localStorage.getItem('wardom_giveaway_entries') || '[]')
+  const filtered = existing.filter((e) => e.id !== id)
+  localStorage.setItem('wardom_giveaway_entries', JSON.stringify(filtered))
 }
 
 // Fetch Projects from Supabase

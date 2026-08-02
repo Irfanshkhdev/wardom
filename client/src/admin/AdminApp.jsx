@@ -12,6 +12,10 @@ import {
   Settings,
   Sparkles,
   Trash2,
+  Trophy,
+  Gamepad2,
+  Youtube,
+  Instagram,
 } from 'lucide-react'
 
 import AdminPageLayout from './components/AdminPageLayout'
@@ -23,9 +27,11 @@ import StatusCard from './components/StatusCard'
 import {
   createProject,
   createTestimonial,
+  deleteGiveawayEntry,
   deleteProject,
   deleteTestimonial,
   fetchAdminContacts,
+  fetchAdminGiveawayEntries,
   fetchAdminMe,
   fetchAdminNewsletter,
   fetchAdminProjects,
@@ -38,6 +44,7 @@ import {
 
 const sidebarLinks = [
   { label: 'Overview', to: '', icon: LayoutGrid },
+  { label: 'Giveaways', to: 'giveaway', icon: Trophy },
   { label: 'Projects', to: 'projects', icon: FolderKanban },
   { label: 'Testimonials', to: 'testimonials', icon: Sparkles },
   { label: 'Messages', to: 'messages', icon: MessageSquareText },
@@ -99,15 +106,16 @@ function AdminShell({ me, onLogout, children }) {
   )
 }
 
-function DashboardPage({ projects = [], testimonials = [], messages = [], subscribers = [] }) {
+function DashboardPage({ projects = [], testimonials = [], messages = [], subscribers = [], giveaways = [] }) {
   const safeProjects = Array.isArray(projects) ? projects : []
   const safeTestimonials = Array.isArray(testimonials) ? testimonials : []
   const safeMessages = Array.isArray(messages) ? messages : []
   const safeSubscribers = Array.isArray(subscribers) ? subscribers : []
+  const safeGiveaways = Array.isArray(giveaways) ? giveaways : []
 
   const stats = [
+    { label: 'Giveaway Entries', value: safeGiveaways.length, tint: 'border-amber-500/30 bg-amber-500/10 text-amber-400' },
     { label: 'Active Projects', value: safeProjects.length, tint: 'border-[#5F8D3B]/30 bg-[#5F8D3B]/10 text-[#7BAE47]' },
-    { label: 'Client Reviews', value: safeTestimonials.length, tint: 'border-zinc-700 bg-zinc-800/40 text-white' },
     { label: 'Inbound Messages', value: safeMessages.length, tint: 'border-zinc-700 bg-zinc-800/40 text-white' },
     { label: 'Subscribers', value: safeSubscribers.length, tint: 'border-[#5F8D3B]/30 bg-[#5F8D3B]/10 text-[#7BAE47]' },
   ]
@@ -117,10 +125,10 @@ function DashboardPage({ projects = [], testimonials = [], messages = [], subscr
       <PageHeader
         eyebrow="Console Overview"
         title="Dashboard"
-        description="Monitor system metrics, manage public case studies, and review inbound client inquiries."
+        description="Monitor system metrics, review Stumble Pass giveaway entries, and manage client inquiries."
         action={
-          <Link to="projects" className="inline-flex items-center gap-2 rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-2 text-xs font-semibold text-white hover:bg-[#27272A]">
-            Manage Projects <ArrowRight size={14} />
+          <Link to="giveaway" className="inline-flex items-center gap-2 rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-2 text-xs font-semibold text-amber-400 hover:bg-[#27272A]">
+            <Trophy size={14} /> Manage Giveaways
           </Link>
         }
       />
@@ -131,30 +139,133 @@ function DashboardPage({ projects = [], testimonials = [], messages = [], subscr
         ))}
       </div>
 
-      <FormCard title="Recent Inquiries">
+      <FormCard title="Recent Giveaway Submissions">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold text-white">Latest Contact Submissions</h2>
-          <Link to="messages" className="text-xs font-semibold text-[#7BAE47] hover:underline">View All Messages &rarr;</Link>
+          <h2 className="text-sm font-bold text-white">Latest Stumble Pass Entries</h2>
+          <Link to="giveaway" className="text-xs font-semibold text-amber-400 hover:underline">View All Entries ({safeGiveaways.length}) &rarr;</Link>
         </div>
 
         <div className="mt-4 space-y-3">
-          {safeMessages.slice(0, 3).length === 0 ? (
-            <EmptyState title="No messages yet" description="Incoming inquiries will appear here once the contact form is submitted." />
+          {safeGiveaways.slice(0, 3).length === 0 ? (
+            <EmptyState title="No giveaway entries yet" description="Viewer entries from /giveaway will appear here." />
           ) : (
-            safeMessages.slice(0, 3).map((msg, i) => (
-              <div key={msg.id || i} className="flex items-center justify-between rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-3 text-xs">
+            safeGiveaways.slice(0, 3).map((entry, i) => (
+              <div key={entry.id || i} className="flex items-center justify-between rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-3 text-xs">
                 <div>
-                  <p className="font-bold text-white">{msg.name}</p>
-                  <p className="text-zinc-400">{msg.email}</p>
+                  <p className="font-bold text-white flex items-center gap-2">
+                    {entry.name} <span className="font-normal text-amber-400 font-mono">({entry.stumble_ign})</span>
+                  </p>
+                  <p className="text-zinc-400">YT: {entry.youtube} · IG: {entry.instagram}</p>
                 </div>
-                <span className="rounded bg-zinc-800 px-2.5 py-1 text-zinc-300 font-mono text-[11px]">
-                  {msg.budget || 'Inquiry'}
+                <span className="rounded bg-amber-500/20 text-amber-300 px-2.5 py-1 font-mono text-[11px]">
+                  Map: {entry.anti_bot_map || 'N/A'}
                 </span>
               </div>
             ))
           )}
         </div>
       </FormCard>
+    </AdminPageLayout>
+  )
+}
+
+function GiveawayAdminPage() {
+  const [entries, setEntries] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  const loadEntries = async () => {
+    try {
+      setLoading(true)
+      const data = await fetchAdminGiveawayEntries()
+      setEntries(Array.isArray(data) ? data : [])
+    } catch (error) {
+      console.error(error)
+      setEntries([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadEntries()
+  }, [])
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteGiveawayEntry(id)
+      loadEntries()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  return (
+    <AdminPageLayout>
+      <PageHeader
+        eyebrow="Stream Events"
+        title="Stumble Pass Giveaway Entries"
+        description="View and verify viewer submissions from /giveaway to pick stream winners!"
+      />
+
+      {loading ? <p className="text-xs text-zinc-400">Loading entries…</p> : null}
+
+      <div className="space-y-4">
+        {!loading && entries.length === 0 ? (
+          <EmptyState title="No giveaway entries yet" description="Share the link https://wardom.store/giveaway to start collecting entries." />
+        ) : (
+          entries.map((item, index) => (
+            <div key={item.id || index} className="rounded-2xl border border-[#27272A] bg-[#18181B] p-5 text-xs space-y-3">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-[#27272A] pb-3">
+                <div>
+                  <span className="font-mono text-[10px] font-bold text-amber-400 uppercase">ENTRY #{entries.length - index}</span>
+                  <h3 className="text-base font-extrabold text-white flex items-center gap-2">
+                    {item.name}
+                  </h3>
+                  <p className="text-zinc-400 text-[11px]">{item.email}</p>
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 font-bold text-amber-400 text-xs flex items-center gap-1.5">
+                    <Gamepad2 size={14} /> IGN: {item.stumble_ign}
+                  </div>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="rounded-lg border border-[#27272A] bg-[#09090B] p-2 text-zinc-400 hover:text-red-400"
+                    title="Delete Entry"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-3 bg-[#09090B] p-3 rounded-xl border border-[#27272A]">
+                <div className="flex items-center gap-2 text-zinc-300">
+                  <Youtube size={14} className="text-red-500 shrink-0" />
+                  <span className="font-mono">{item.youtube}</span>
+                </div>
+                <div className="flex items-center gap-2 text-zinc-300">
+                  <Instagram size={14} className="text-pink-500 shrink-0" />
+                  <span className="font-mono">{item.instagram}</span>
+                </div>
+                <div className="flex items-center gap-2 text-amber-400 font-semibold">
+                  <span>Favorite Map:</span> <span className="text-white font-mono">{item.anti_bot_map}</span>
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-1">
+                <div>
+                  <span className="font-mono text-[10px] uppercase font-bold text-zinc-400">Feedback / Stream Ideas</span>
+                  <p className="text-zinc-200 mt-0.5">{item.feedback}</p>
+                </div>
+                <div>
+                  <span className="font-mono text-[10px] uppercase font-bold text-zinc-400">Next Game to Play</span>
+                  <p className="text-zinc-200 mt-0.5">{item.future_game}</p>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </AdminPageLayout>
   )
 }
@@ -533,6 +644,7 @@ export default function AdminApp() {
   const [testimonials, setTestimonials] = useState([])
   const [messages, setMessages] = useState([])
   const [subscribers, setSubscribers] = useState([])
+  const [giveaways, setGiveaways] = useState([])
 
   useEffect(() => {
     const syncSession = async () => {
@@ -545,17 +657,19 @@ export default function AdminApp() {
         const profile = await fetchAdminMe().catch(() => ({ email: 'irfanshaikh3262@gmail.com' }))
         if (profile?.email) setMe(profile)
 
-        const [projectData, testimonialData, messageData, subscriberData] = await Promise.all([
+        const [projectData, testimonialData, messageData, subscriberData, giveawayData] = await Promise.all([
           fetchAdminProjects().catch(() => []),
           fetchAdminTestimonials().catch(() => []),
           fetchAdminContacts().catch(() => []),
           fetchAdminNewsletter().catch(() => []),
+          fetchAdminGiveawayEntries().catch(() => []),
         ])
 
         setProjects(Array.isArray(projectData) ? projectData : [])
         setTestimonials(Array.isArray(testimonialData) ? testimonialData : [])
         setMessages(Array.isArray(messageData) ? messageData : [])
         setSubscribers(Array.isArray(subscriberData) ? subscriberData : [])
+        setGiveaways(Array.isArray(giveawayData) ? giveawayData : [])
       } catch (err) {
         console.warn('Session sync fallback:', err)
       } finally {
@@ -596,6 +710,7 @@ export default function AdminApp() {
     setTestimonials([])
     setMessages([])
     setSubscribers([])
+    setGiveaways([])
     navigate('/admin')
   }
 
@@ -615,7 +730,7 @@ export default function AdminApp() {
           </div>
 
           <h1 className="text-xl font-bold text-white">Admin Console</h1>
-          <p className="mt-1 text-xs text-zinc-400">Sign in to manage portfolio projects, client testimonials, and messages.</p>
+          <p className="mt-1 text-xs text-zinc-400">Sign in to manage portfolio projects, client testimonials, and giveaways.</p>
 
           <form onSubmit={handleLogin} className="mt-6 space-y-3 text-xs">
             <input className="w-full rounded-xl border border-[#27272A] bg-[#09090B] px-4 py-3 outline-none focus:border-[#5F8D3B]" name="email" type="email" placeholder="Admin Email" defaultValue="irfanshaikh3262@gmail.com" required />
@@ -633,7 +748,8 @@ export default function AdminApp() {
   return (
     <AdminShell me={me} onLogout={handleLogout}>
       <Routes>
-        <Route index element={<DashboardPage projects={projects} testimonials={testimonials} messages={messages} subscribers={subscribers} />} />
+        <Route index element={<DashboardPage projects={projects} testimonials={testimonials} messages={messages} subscribers={subscribers} giveaways={giveaways} />} />
+        <Route path="giveaway" element={<GiveawayAdminPage />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="testimonials" element={<TestimonialsPage />} />
         <Route path="messages" element={<MessagesPage />} />

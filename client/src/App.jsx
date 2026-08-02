@@ -15,6 +15,7 @@ import Contact from './sections/Contact'
 import ProjectsPage from './pages/ProjectsPage'
 import PricingPage from './pages/PricingPage'
 import AboutPage from './pages/AboutPage'
+import GiveawayPage from './pages/GiveawayPage'
 
 import AdminApp from './admin/AdminApp'
 import NotFound from './pages/NotFound'
@@ -28,7 +29,7 @@ function PublicApp() {
       <Navbar />
 
       <main>
-        {/* 1. Hero (Digital Products that Scale + Auto-scrolling Recent Work + 4 Stats) */}
+        {/* 1. Hero (Digital Products that Scale + 4 Static Work Cards + 4 Stats) */}
         <Hero />
 
         {/* Marquee Stack Ticker */}
@@ -37,7 +38,7 @@ function PublicApp() {
         {/* 2. Services (OUR EXPERTISE - 01 Landing Pages, 02 Full-Stack Apps, 03 Mobile Apps, 04 Portfolio Websites) */}
         <Services />
 
-        {/* 3. Testimonials (Client feedback - 6 Exact Helaph Quotes) */}
+        {/* 3. Testimonials (Client feedback - Auto Marquee) */}
         <Testimonials />
 
         {/* 4. Team Banner (Designers, engineers, problem solvers.) */}
@@ -92,6 +93,7 @@ export default function App() {
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/giveaway" element={<GiveawayPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
