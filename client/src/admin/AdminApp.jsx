@@ -16,7 +16,6 @@ import {
   Gamepad2,
   Youtube,
   Instagram,
-  User,
   Eye,
   X,
 } from 'lucide-react'
@@ -58,9 +57,9 @@ const sidebarLinks = [
 function AdminShell({ me, onLogout, children }) {
   return (
     <div className="min-h-screen bg-[#09090B] px-4 py-6 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 lg:flex-row">
+      <div className="mx-auto flex max-w-7xl flex-col items-start gap-6 lg:flex-row">
         {/* Sidebar */}
-        <aside className="w-full min-w-0 rounded-2xl border border-[#27272A] bg-[#121215] p-5 lg:w-64">
+        <aside className="w-full shrink-0 rounded-2xl border border-[#27272A] bg-[#121215] p-5 lg:w-64 lg:sticky lg:top-6">
           <div className="mb-6 flex items-center gap-3 border-b border-[#27272A] pb-5">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#5F8D3B] text-sm font-black text-white">
               W
@@ -101,7 +100,7 @@ function AdminShell({ me, onLogout, children }) {
         </aside>
 
         {/* Main Console Content */}
-        <main className="min-w-0 flex-1 rounded-2xl border border-[#27272A] bg-[#121215] p-6 lg:p-8">
+        <main className="w-full min-w-0 flex-1 rounded-2xl border border-[#27272A] bg-[#121215] p-6 lg:p-8">
           {children}
         </main>
       </div>
@@ -212,7 +211,7 @@ function GiveawayAdminPage() {
         description="Individual viewer giveaway form entries stored separately in Supabase database."
       />
 
-      {loading ? <p className="text-xs text-zinc-400">Loading giveaway entries from Supabase…</p> : null}
+      {loading ? <p className="text-xs text-zinc-400 py-4">Loading giveaway entries from Supabase…</p> : null}
 
       <div className="space-y-4">
         {!loading && entries.length === 0 ? (
@@ -229,7 +228,7 @@ function GiveawayAdminPage() {
                       <p className="text-zinc-400 text-[11px]">{item.email}</p>
                     </div>
 
-                    <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 font-bold text-amber-400 text-xs flex items-center gap-1.5">
+                    <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 font-bold text-amber-400 text-xs flex items-center gap-1.5 shrink-0">
                       <Gamepad2 size={14} /> {item.stumble_ign}
                     </div>
                   </div>
