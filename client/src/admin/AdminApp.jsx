@@ -16,6 +16,9 @@ import {
   Gamepad2,
   Youtube,
   Instagram,
+  User,
+  Eye,
+  X,
 } from 'lucide-react'
 
 import AdminPageLayout from './components/AdminPageLayout'
@@ -128,7 +131,7 @@ function DashboardPage({ projects = [], testimonials = [], messages = [], subscr
         description="Monitor system metrics, review Stumble Pass giveaway entries, and manage client inquiries."
         action={
           <Link to="giveaway" className="inline-flex items-center gap-2 rounded-xl border border-[#27272A] bg-[#18181B] px-4 py-2 text-xs font-semibold text-amber-400 hover:bg-[#27272A]">
-            <Trophy size={14} /> Manage Giveaways
+            <Trophy size={14} /> View Giveaway Submissions ({safeGiveaways.length})
           </Link>
         }
       />
@@ -142,7 +145,7 @@ function DashboardPage({ projects = [], testimonials = [], messages = [], subscr
       <FormCard title="Recent Giveaway Submissions">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-white">Latest Stumble Pass Entries</h2>
-          <Link to="giveaway" className="text-xs font-semibold text-amber-400 hover:underline">View All Entries ({safeGiveaways.length}) &rarr;</Link>
+          <Link to="giveaway" className="text-xs font-semibold text-amber-400 hover:underline">View All Separately ({safeGiveaways.length}) &rarr;</Link>
         </div>
 
         <div className="mt-4 space-y-3">
@@ -172,6 +175,7 @@ function DashboardPage({ projects = [], testimonials = [], messages = [], subscr
 function GiveawayAdminPage() {
   const [entries, setEntries] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedEntry, setSelectedEntry] = useState(null)
 
   const loadEntries = async () => {
     try {
@@ -193,6 +197,7 @@ function GiveawayAdminPage() {
   const handleDelete = async (id) => {
     try {
       await deleteGiveawayEntry(id)
+      if (selectedEntry?.id === id) setSelectedEntry(null)
       loadEntries()
     } catch (err) {
       console.error(err)
@@ -202,67 +207,143 @@ function GiveawayAdminPage() {
   return (
     <AdminPageLayout>
       <PageHeader
-        eyebrow="Stream Events"
-        title="Stumble Pass Giveaway Entries"
-        description="View and verify viewer submissions from /giveaway to pick stream winners!"
+        eyebrow="Supabase Table: giveaway_entries"
+        title="Stumble Pass Giveaway Submissions"
+        description="Individual viewer giveaway form entries stored separately in Supabase database."
       />
 
-      {loading ? <p className="text-xs text-zinc-400">Loading entries…</p> : null}
+      {loading ? <p className="text-xs text-zinc-400">Loading giveaway entries from Supabase…</p> : null}
 
       <div className="space-y-4">
         {!loading && entries.length === 0 ? (
-          <EmptyState title="No giveaway entries yet" description="Share the link https://wardom.store/giveaway to start collecting entries." />
+          <EmptyState title="No giveaway entries yet" description="Share https://wardom.store/giveaway to start receiving submissions in Supabase." />
         ) : (
-          entries.map((item, index) => (
-            <div key={item.id || index} className="rounded-2xl border border-[#27272A] bg-[#18181B] p-5 text-xs space-y-3">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-[#27272A] pb-3">
-                <div>
-                  <span className="font-mono text-[10px] font-bold text-amber-400 uppercase">ENTRY #{entries.length - index}</span>
-                  <h3 className="text-base font-extrabold text-white flex items-center gap-2">
-                    {item.name}
-                  </h3>
-                  <p className="text-zinc-400 text-[11px]">{item.email}</p>
+          <div className="grid gap-4 md:grid-cols-2">
+            {entries.map((item, index) => (
+              <div key={item.id || index} className="rounded-2xl border border-amber-500/20 bg-[#18181B] p-5 text-xs flex flex-col justify-between hover:border-amber-500/40 transition-colors">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between border-b border-[#27272A] pb-3">
+                    <div>
+                      <span className="font-mono text-[10px] font-bold text-amber-400 uppercase">GIVEAWAY ENTRY #{entries.length - index}</span>
+                      <h3 className="text-base font-extrabold text-white">{item.name}</h3>
+                      <p className="text-zinc-400 text-[11px]">{item.email}</p>
+                    </div>
+
+                    <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 font-bold text-amber-400 text-xs flex items-center gap-1.5">
+                      <Gamepad2 size={14} /> {item.stumble_ign}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 bg-[#09090B] p-3 rounded-xl border border-[#27272A] font-mono text-[11px]">
+                    <div className="flex items-center gap-2 text-zinc-300">
+                      <Youtube size={13} className="text-red-500 shrink-0" />
+                      <span>YouTube: <strong className="text-white">{item.youtube}</strong></span>
+                    </div>
+                    <div className="flex items-center gap-2 text-zinc-300">
+                      <Instagram size={13} className="text-pink-500 shrink-0" />
+                      <span>Instagram: <strong className="text-white">{item.instagram}</strong></span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 pt-1 text-xs">
+                    <div>
+                      <span className="font-mono text-[10px] uppercase font-bold text-zinc-400">Stream Feedback / Ideas:</span>
+                      <p className="text-zinc-200 mt-0.5 line-clamp-2">{item.feedback}</p>
+                    </div>
+                    <div>
+                      <span className="font-mono text-[10px] uppercase font-bold text-zinc-400">Next Game Request:</span>
+                      <p className="text-zinc-200 mt-0.5">{item.future_game}</p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 font-bold text-amber-400 text-xs flex items-center gap-1.5">
-                    <Gamepad2 size={14} /> IGN: {item.stumble_ign}
-                  </div>
+                <div className="mt-4 flex items-center justify-between border-t border-[#27272A] pt-3">
+                  <button
+                    onClick={() => setSelectedEntry(item)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#27272A] bg-[#09090B] px-3 py-1.5 font-semibold text-amber-400 hover:bg-[#27272A]"
+                  >
+                    <Eye size={13} /> View Full Entry
+                  </button>
+
                   <button
                     onClick={() => handleDelete(item.id)}
                     className="rounded-lg border border-[#27272A] bg-[#09090B] p-2 text-zinc-400 hover:text-red-400"
                     title="Delete Entry"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={13} />
                   </button>
                 </div>
               </div>
+            ))}
+          </div>
+        )}
+      </div>
 
-              <div className="grid gap-3 sm:grid-cols-2 bg-[#09090B] p-3 rounded-xl border border-[#27272A]">
-                <div className="flex items-center gap-2 text-zinc-300">
-                  <Youtube size={14} className="text-red-500 shrink-0" />
-                  <span className="font-mono">{item.youtube}</span>
+      {/* Detail Modal for viewing individual submission separately */}
+      {selectedEntry && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-2xl border border-amber-500/30 bg-[#121215] p-6 text-white shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-[#27272A] pb-3">
+              <div>
+                <span className="font-mono text-[10px] font-bold text-amber-400 uppercase">INDIVIDUAL SUBMISSION DETAIL</span>
+                <h2 className="text-lg font-extrabold text-white">{selectedEntry.name}</h2>
+              </div>
+              <button
+                onClick={() => setSelectedEntry(null)}
+                className="rounded-lg border border-[#27272A] p-2 text-zinc-400 hover:text-white"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs">
+              <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 flex items-center justify-between">
+                <span className="font-bold text-amber-300">Stumble Guys IGN:</span>
+                <span className="font-mono font-bold text-amber-400 text-sm">{selectedEntry.stumble_ign}</span>
+              </div>
+
+              <div className="grid gap-2 sm:grid-cols-2 bg-[#09090B] p-3 rounded-xl border border-[#27272A]">
+                <div>
+                  <span className="text-zinc-400 block text-[10px]">Email:</span>
+                  <span className="font-semibold text-white">{selectedEntry.email}</span>
                 </div>
-                <div className="flex items-center gap-2 text-zinc-300">
-                  <Instagram size={14} className="text-pink-500 shrink-0" />
-                  <span className="font-mono">{item.instagram}</span>
+                <div>
+                  <span className="text-zinc-400 block text-[10px]">YouTube:</span>
+                  <span className="font-semibold text-white">{selectedEntry.youtube}</span>
+                </div>
+                <div>
+                  <span className="text-zinc-400 block text-[10px]">Instagram:</span>
+                  <span className="font-semibold text-white">{selectedEntry.instagram}</span>
+                </div>
+                <div>
+                  <span className="text-zinc-400 block text-[10px]">Submitted:</span>
+                  <span className="font-semibold text-white">{new Date(selectedEntry.created_at || Date.now()).toLocaleString()}</span>
                 </div>
               </div>
 
-              <div className="space-y-2 pt-1">
+              <div className="bg-[#09090B] p-3 rounded-xl border border-[#27272A] space-y-2">
                 <div>
-                  <span className="font-mono text-[10px] uppercase font-bold text-zinc-400">Feedback / Stream Ideas</span>
-                  <p className="text-zinc-200 mt-0.5">{item.feedback}</p>
+                  <span className="font-bold text-zinc-400 block">Favorite Stream Part / Feedback:</span>
+                  <p className="text-zinc-200 mt-1 leading-relaxed">{selectedEntry.feedback}</p>
                 </div>
                 <div>
-                  <span className="font-mono text-[10px] uppercase font-bold text-zinc-400">Next Game to Play</span>
-                  <p className="text-zinc-200 mt-0.5">{item.future_game}</p>
+                  <span className="font-bold text-zinc-400 block">Next Game Request:</span>
+                  <p className="text-zinc-200 mt-1">{selectedEntry.future_game}</p>
                 </div>
               </div>
             </div>
-          ))
-        )}
-      </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setSelectedEntry(null)}
+                className="rounded-xl bg-[#5F8D3B] px-5 py-2 text-xs font-bold text-white hover:bg-[#4d7330]"
+              >
+                Close View
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminPageLayout>
   )
 }
