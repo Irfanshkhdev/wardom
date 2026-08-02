@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Check, Gamepad2, Gift, Loader2, Send, ShieldCheck, Sparkles, Youtube, Instagram, Trophy, ArrowUpRight } from 'lucide-react'
+import { Check, Gamepad2, Gift, Loader2, Send, Sparkles, Youtube, Instagram, Trophy } from 'lucide-react'
 import Container from '../components/Container'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -16,7 +16,6 @@ const initialForm = {
   stumble_ign: '',
   feedback: '',
   future_game: '',
-  anti_bot_map: '',
 }
 
 export default function GiveawayPage() {
@@ -52,7 +51,6 @@ export default function GiveawayPage() {
       stumble_ign: form.stumble_ign,
       feedback: form.feedback,
       future_game: form.future_game,
-      anti_bot_map: form.anti_bot_map,
       created_at: new Date().toISOString(),
     }
 
@@ -68,7 +66,6 @@ export default function GiveawayPage() {
             stumble_ign: form.stumble_ign,
             feedback: form.feedback,
             future_game: form.future_game,
-            anti_bot_map: form.anti_bot_map,
           },
         ])
       } catch (sbErr) {
@@ -316,22 +313,6 @@ export default function GiveawayPage() {
                       value={form.future_game}
                       onChange={handleChange}
                       placeholder="e.g. Valorant, Roblox, Minecraft, GTA V..."
-                      className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
-                    />
-                  </div>
-
-                  {/* Anti-Bot Question */}
-                  <div>
-                    <label className="flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[#0F0F0F] dark:text-white mb-2">
-                      <ShieldCheck className="h-4 w-4 text-[#5F8D3B]" /> Anti-Bot Question: What is your all-time favorite Stumble Guys map? <span className="text-[#5F8D3B]">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="anti_bot_map"
-                      required
-                      value={form.anti_bot_map}
-                      onChange={handleChange}
-                      placeholder="e.g. Block Dash, Laser Tracer, Cannon Climb..."
                       className="w-full rounded-xl border border-[#E5E7EB] dark:border-[#27272A] bg-[#FAFAFA] dark:bg-[#181924] px-4 py-3 text-xs text-[#0F0F0F] dark:text-white placeholder:text-[#999999] focus:border-[#5F8D3B] focus:bg-white dark:focus:bg-[#12131A] focus:outline-none transition-all"
                     />
                   </div>

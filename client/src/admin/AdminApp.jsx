@@ -158,7 +158,7 @@ function DashboardPage({ projects = [], testimonials = [], messages = [], subscr
                   <p className="text-zinc-400">YT: {entry.youtube} · IG: {entry.instagram}</p>
                 </div>
                 <span className="rounded bg-amber-500/20 text-amber-300 px-2.5 py-1 font-mono text-[11px]">
-                  Map: {entry.anti_bot_map || 'N/A'}
+                  Verified
                 </span>
               </div>
             ))
@@ -238,7 +238,7 @@ function GiveawayAdminPage() {
                 </div>
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-3 bg-[#09090B] p-3 rounded-xl border border-[#27272A]">
+              <div className="grid gap-3 sm:grid-cols-2 bg-[#09090B] p-3 rounded-xl border border-[#27272A]">
                 <div className="flex items-center gap-2 text-zinc-300">
                   <Youtube size={14} className="text-red-500 shrink-0" />
                   <span className="font-mono">{item.youtube}</span>
@@ -246,9 +246,6 @@ function GiveawayAdminPage() {
                 <div className="flex items-center gap-2 text-zinc-300">
                   <Instagram size={14} className="text-pink-500 shrink-0" />
                   <span className="font-mono">{item.instagram}</span>
-                </div>
-                <div className="flex items-center gap-2 text-amber-400 font-semibold">
-                  <span>Favorite Map:</span> <span className="text-white font-mono">{item.anti_bot_map}</span>
                 </div>
               </div>
 
